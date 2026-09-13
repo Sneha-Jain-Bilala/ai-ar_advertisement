@@ -22,7 +22,7 @@ class AnalyticsRepository {
   Future<void> logInteraction(InteractionModel interaction) async {
     _inMemoryInteractions.add(interaction);
     try {
-      await _firebaseService.interactionsRef.add(interaction.toMap());
+      await _firebaseService.interactionsRef?.add(interaction.toMap());
     } catch (e) {
       debugPrint('logInteraction error: $e');
     }

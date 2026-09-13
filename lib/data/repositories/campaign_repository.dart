@@ -20,8 +20,8 @@ class CampaignRepository {
     }
 
     try {
-      final snapshot = await _firebaseService.campaignsRef.get();
-      if (snapshot.docs.isNotEmpty) {
+      final snapshot = await _firebaseService.campaignsRef?.get();
+      if (snapshot != null && snapshot.docs.isNotEmpty) {
         final List<CampaignModel> list = [];
         for (final doc in snapshot.docs) {
           final data = Map<String, dynamic>.from(doc.data() as Map);
@@ -47,8 +47,8 @@ class CampaignRepository {
       return list.firstWhere((c) => c.id == id);
     } catch (_) {
       try {
-        final doc = await _firebaseService.campaignsRef.doc(id).get();
-        if (doc.exists && doc.data() != null) {
+        final doc = await _firebaseService.campaignsRef?.doc(id).get();
+        if (doc != null && doc.exists && doc.data() != null) {
           final data = Map<String, dynamic>.from(doc.data() as Map);
           final productId = data['productId'] as String? ?? '';
           final product = await _productRepository.getProductById(productId);
@@ -73,10 +73,10 @@ class CampaignRepository {
   /// Create a new campaign
   Future<CampaignModel> createCampaign(CampaignModel campaign) async {
     try {
-      final docRef = await _firebaseService.campaignsRef.add(campaign.toMap());
+      final docRef = await _firebaseService.campaignsRef?.add(campaign.toMap());
       final savedCampaign = CampaignModel.fromMap(
         campaign.toMap(),
-        docRef.id,
+        docRef?.id ?? campaign.id,
         product: campaign.product,
       );
       _cachedCampaigns.insert(0, savedCampaign);
@@ -101,7 +101,7 @@ class CampaignRepository {
     }
 
     try {
-      await _firebaseService.campaignsRef.doc(campaignId).update({
+      await _firebaseService.campaignsRef?.doc(campaignId).update({
         'scanCount': FieldValue.increment(1),
         'uniqueViewCount': FieldValue.increment(1),
       });
@@ -117,7 +117,7 @@ class CampaignRepository {
       _cachedCampaigns[index] = _cachedCampaigns[index].copyWith(status: status);
     }
     try {
-      await _firebaseService.campaignsRef.doc(campaignId).update({'status': status});
+      await _firebaseService.campaignsRef?.doc(campaignId).update({'status': status});
     } catch (e) {
       debugPrint('updateCampaignStatus error: $e');
     }

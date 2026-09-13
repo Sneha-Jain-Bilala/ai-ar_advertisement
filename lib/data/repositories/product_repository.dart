@@ -16,8 +16,8 @@ class ProductRepository {
     }
 
     try {
-      final snapshot = await _firebaseService.productsRef.get();
-      if (snapshot.docs.isNotEmpty) {
+      final snapshot = await _firebaseService.productsRef?.get();
+      if (snapshot != null && snapshot.docs.isNotEmpty) {
         _cachedProducts = snapshot.docs.map((doc) {
           return ProductModel.fromMap(
             Map<String, dynamic>.from(doc.data() as Map),
@@ -42,8 +42,8 @@ class ProductRepository {
       return list.firstWhere((p) => p.id == id);
     } catch (_) {
       try {
-        final doc = await _firebaseService.productsRef.doc(id).get();
-        if (doc.exists && doc.data() != null) {
+        final doc = await _firebaseService.productsRef?.doc(id).get();
+        if (doc != null && doc.exists && doc.data() != null) {
           return ProductModel.fromMap(
             Map<String, dynamic>.from(doc.data() as Map),
             doc.id,
@@ -59,10 +59,10 @@ class ProductRepository {
   /// Add a new product to Firestore
   Future<ProductModel> addProduct(ProductModel product) async {
     try {
-      final docRef = await _firebaseService.productsRef.add(product.toMap());
+      final docRef = await _firebaseService.productsRef?.add(product.toMap());
       final newProduct = product.copyWith();
-      _cachedProducts.add(ProductModel.fromMap(newProduct.toMap(), docRef.id));
-      return ProductModel.fromMap(newProduct.toMap(), docRef.id);
+      _cachedProducts.add(ProductModel.fromMap(newProduct.toMap(), docRef?.id ?? product.id));
+      return ProductModel.fromMap(newProduct.toMap(), docRef?.id ?? product.id);
     } catch (e) {
       debugPrint('ProductRepository add error: $e');
       _cachedProducts.add(product);
