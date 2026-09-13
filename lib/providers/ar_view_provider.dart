@@ -68,7 +68,6 @@ class ArViewProvider extends ChangeNotifier {
     _dwellTimer?.cancel();
     _dwellTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _dwellTimeSeconds++;
-      notifyListeners();
     });
   }
 

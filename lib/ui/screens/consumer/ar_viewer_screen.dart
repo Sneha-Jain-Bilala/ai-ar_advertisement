@@ -24,8 +24,19 @@ class ArViewerScreen extends StatefulWidget {
 class _ArViewerScreenState extends State<ArViewerScreen> {
   SceneViewController? _sceneController;
   final bool _isArSupported = true;
-  bool _useStudioFallback = false;
+  bool _useStudioFallback = true;
   bool _isFlashOn = false;
+  ArViewProvider? _arProvider;
+
+  String _resolveModelPath(String rawPath) {
+    if (rawPath.startsWith('http://') ||
+        rawPath.startsWith('https://') ||
+        rawPath.startsWith('flutter_assets/')) {
+      return rawPath;
+    }
+    // Android AssetManager opens Flutter assets under flutter_assets/
+    return 'flutter_assets/$rawPath';
+  }
 
   @override
   void initState() {
@@ -33,6 +44,7 @@ class _ArViewerScreenState extends State<ArViewerScreen> {
     _sceneController = SceneViewController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       final campaignProvider = context.read<CampaignProvider>();
       final arProvider = context.read<ArViewProvider>();
 
@@ -50,21 +62,40 @@ class _ArViewerScreenState extends State<ArViewerScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _arProvider = context.read<ArViewProvider>();
+  }
+
+  @override
   void dispose() {
-    context.read<ArViewProvider>().endSession();
+    _arProvider?.endSession();
     _sceneController?.dispose();
     super.dispose();
   }
 
+  void _toggleViewMode() {
+    setState(() {
+      _useStudioFallback = !_useStudioFallback;
+      _sceneController?.dispose();
+      _sceneController = SceneViewController();
+    });
+  }
+
   void _onSceneCreated() {
-    final arProvider = context.read<ArViewProvider>();
+    if (!mounted) return;
+    final arProvider = _arProvider ?? context.read<ArViewProvider>();
     final product = arProvider.activeProduct;
     if (product != null && _sceneController != null) {
+      final effectivePath = _resolveModelPath(product.modelAssetPath);
       try {
         _sceneController!.loadModel(
           ModelNode(
-            modelPath: product.modelAssetPath,
+            modelPath: effectivePath,
             scale: arProvider.scale,
+            x: 0.0,
+            y: _useStudioFallback ? 0.0 : -0.15,
+            z: _useStudioFallback ? 0.0 : -0.85,
           ),
         );
       } catch (e) {
@@ -230,9 +261,7 @@ class _ArViewerScreenState extends State<ArViewerScreen> {
             top: 180,
             right: 16,
             child: GestureDetector(
-              onTap: () {
-                setState(() => _useStudioFallback = !_useStudioFallback);
-              },
+              onTap: _toggleViewMode,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
@@ -244,13 +273,13 @@ class _ArViewerScreenState extends State<ArViewerScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      _useStudioFallback ? Icons.threed_rotation_rounded : Icons.view_in_ar_rounded,
+                      _useStudioFallback ? Icons.view_in_ar_rounded : Icons.threed_rotation_rounded,
                       size: 14,
                       color: AppColors.primary,
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      _useStudioFallback ? '3D Orbit' : 'AR View',
+                      _useStudioFallback ? 'Switch to AR' : '3D Studio',
                       style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                     ),
                   ],
@@ -283,15 +312,18 @@ class _ArViewerScreenState extends State<ArViewerScreen> {
   }
 
   Widget _build3dOrArView(String modelPath) {
+    final effectivePath = _resolveModelPath(modelPath);
+
     if (_useStudioFallback || !_isArSupported) {
       return SceneView(
+        key: const ValueKey('studio_3d_view'),
         controller: _sceneController,
         cameraControlMode: CameraControlMode.orbit,
         autoCenterContent: true,
         onViewCreated: _onSceneCreated,
         initialModels: [
           ModelNode(
-            modelPath: modelPath,
+            modelPath: effectivePath,
             scale: 1.0,
           ),
         ],
@@ -299,11 +331,13 @@ class _ArViewerScreenState extends State<ArViewerScreen> {
     }
 
     return ARSceneView(
+      key: const ValueKey('ar_camera_view'),
       controller: _sceneController,
       planeDetection: true,
       onViewCreated: _onSceneCreated,
       onPlaneDetected: (planeType) {
-        context.read<ArViewProvider>().onPlaneDetected(true);
+        if (!mounted) return;
+        (_arProvider ?? context.read<ArViewProvider>()).onPlaneDetected(true);
       },
       onTap: (nodeName) {
         debugPrint('Tapped model: $nodeName');
