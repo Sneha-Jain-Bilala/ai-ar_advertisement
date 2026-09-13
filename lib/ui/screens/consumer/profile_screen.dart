@@ -77,43 +77,52 @@ class ProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               child: Column(
                 children: [
-                  ListTile(
-                    leading: const Icon(Icons.explore_rounded, color: AppColors.primary),
-                    title: const Text('Consumer / Explorer View'),
-                    subtitle: const Text('Scan QR ads, browse feed, experience 3D AR'),
-                    trailing: auth.isConsumer
-                        ? const Icon(Icons.check_circle_rounded, color: AppColors.primary)
-                        : null,
-                    onTap: () {
-                      auth.switchRole('consumer');
-                      context.go('/home');
-                    },
+                  Material(
+                    color: Colors.transparent,
+                    child: ListTile(
+                      leading: const Icon(Icons.explore_rounded, color: AppColors.primary),
+                      title: const Text('Consumer / Explorer View'),
+                      subtitle: const Text('Scan QR ads, browse feed, experience 3D AR'),
+                      trailing: auth.isConsumer
+                          ? const Icon(Icons.check_circle_rounded, color: AppColors.primary)
+                          : null,
+                      onTap: () {
+                        auth.switchRole('consumer');
+                        context.go('/home');
+                      },
+                    ),
                   ),
                   const Divider(color: AppColors.border),
-                  ListTile(
-                    leading: const Icon(Icons.campaign_rounded, color: AppColors.secondaryDark),
-                    title: const Text('Advertiser / Brand View'),
-                    subtitle: const Text('Create campaigns, monitor scans, manage 3D catalog'),
-                    trailing: auth.isAdvertiser
-                        ? const Icon(Icons.check_circle_rounded, color: AppColors.secondaryDark)
-                        : null,
-                    onTap: () {
-                      auth.switchRole('advertiser');
-                      context.go('/advertiser');
-                    },
+                  Material(
+                    color: Colors.transparent,
+                    child: ListTile(
+                      leading: const Icon(Icons.campaign_rounded, color: AppColors.secondaryDark),
+                      title: const Text('Advertiser / Brand View'),
+                      subtitle: const Text('Create campaigns, monitor scans, manage 3D catalog'),
+                      trailing: auth.isAdvertiser
+                          ? const Icon(Icons.check_circle_rounded, color: AppColors.secondaryDark)
+                          : null,
+                      onTap: () {
+                        auth.switchRole('advertiser');
+                        context.go('/advertiser');
+                      },
+                    ),
                   ),
                   const Divider(color: AppColors.border),
-                  ListTile(
-                    leading: const Icon(Icons.admin_panel_settings_rounded, color: AppColors.accentDark),
-                    title: const Text('Administrator View'),
-                    subtitle: const Text('Platform governance, moderation, system metrics'),
-                    trailing: auth.isAdmin
-                        ? const Icon(Icons.check_circle_rounded, color: AppColors.accentDark)
-                        : null,
-                    onTap: () {
-                      auth.switchRole('admin');
-                      context.go('/admin');
-                    },
+                  Material(
+                    color: Colors.transparent,
+                    child: ListTile(
+                      leading: const Icon(Icons.admin_panel_settings_rounded, color: AppColors.accentDark),
+                      title: const Text('Administrator View'),
+                      subtitle: const Text('Platform governance, moderation, system metrics'),
+                      trailing: auth.isAdmin
+                          ? const Icon(Icons.check_circle_rounded, color: AppColors.accentDark)
+                          : null,
+                      onTap: () {
+                        auth.switchRole('admin');
+                        context.go('/admin');
+                      },
+                    ),
                   ),
                 ],
               ),

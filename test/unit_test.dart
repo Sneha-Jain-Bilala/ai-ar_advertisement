@@ -128,8 +128,8 @@ void main() {
       expect(Validators.required('hello', 'Title'), isNull);
       expect(Validators.required('', 'Title'), contains('required'));
       expect(Validators.price('99.99'), isNull);
-      expect(Validators.price('-5'), contains('greater than zero'));
-      expect(Validators.price('abc'), contains('valid number'));
+      expect(Validators.price('-5'), equals('Enter a valid price'));
+      expect(Validators.price('abc'), equals('Enter a valid price'));
     });
   });
 

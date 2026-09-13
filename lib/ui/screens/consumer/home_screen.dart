@@ -39,20 +39,27 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Hello, ${user?.displayName ?? "Alex"} ✨',
-                          style: AppTypography.headlineLarge,
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          'Discover immersive AR campaigns near you',
-                          style: AppTypography.bodySmall,
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Hello, ${user?.displayName ?? "Alex"} ✨',
+                            style: AppTypography.headlineLarge,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Discover immersive AR campaigns near you',
+                            style: AppTypography.bodySmall,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
                     ),
+                    const SizedBox(width: 8),
                     Row(
                       children: [
                         // Quick Advertiser Switcher Pill
