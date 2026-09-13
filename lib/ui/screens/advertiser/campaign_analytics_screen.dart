@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../core/utils/formatters.dart';
-import '../../../data/models/campaign_model.dart';
+
 import '../../../providers/advertiser_provider.dart';
 import '../../common/custom_card.dart';
 
@@ -58,9 +58,9 @@ class CampaignAnalyticsScreen extends StatelessWidget {
             // Metric Cards Grid (2x2)
             Row(
               children: [
-                Expanded(child: _buildMetricCard('Total Scans', Formatters.formatCompact(campaign.scanCount), Icons.qr_code_scanner_rounded, AppColors.primary, AppColors.primaryLight)),
+                Expanded(child: _buildMetricCard('Total Scans', Formatters.formatCompactNumber(campaign.scanCount), Icons.qr_code_scanner_rounded, AppColors.primary, AppColors.primaryLight)),
                 const SizedBox(width: 12),
-                Expanded(child: _buildMetricCard('Unique Views', Formatters.formatCompact(campaign.uniqueViewCount), Icons.visibility_rounded, AppColors.secondary, AppColors.secondaryLight)),
+                Expanded(child: _buildMetricCard('Unique Views', Formatters.formatCompactNumber(campaign.uniqueViewCount), Icons.visibility_rounded, AppColors.secondary, AppColors.secondaryLight)),
               ],
             ),
             const SizedBox(height: 12),
@@ -100,7 +100,7 @@ class CampaignAnalyticsScreen extends StatelessWidget {
                           reservedSize: 40,
                           getTitlesWidget: (value, meta) {
                             return Text(
-                              Formatters.formatCompact(value.toInt()),
+                              Formatters.formatCompactNumber(value.toInt()),
                               style: AppTypography.bodySmall.copyWith(fontSize: 10),
                             );
                           },

@@ -129,6 +129,79 @@ Provide a friendly, helpful, concise answer (under 50 words) directly answering 
     }
   }
 
+  /// Generate FAQ Q&A pairs for a product
+  Future<List<Map<String, String>>> generateFAQ({
+    required String productName,
+    required String brand,
+    required String description,
+    required Map<String, String> specs,
+  }) async {
+    if (!isConfigured) {
+      return [
+        {'q': 'What makes this product special?', 'a': 'Premium materials and cutting-edge design for everyday excellence.'},
+        {'q': 'Is it suitable for daily use?', 'a': 'Absolutely — built for both performance and daily reliability.'},
+        {'q': 'What warranty is included?', 'a': 'Standard manufacturer warranty with extended coverage options.'},
+      ];
+    }
+
+    final prompt = '''
+Generate exactly 3 FAQ question-answer pairs for this product:
+Product: $productName by $brand
+Description: $description
+Specs: ${specs.entries.map((e) => '${e.key}: ${e.value}').join(', ')}
+
+Respond ONLY with valid JSON array:
+[{"q": "question", "a": "concise answer under 20 words"}]
+''';
+
+    try {
+      final text = await _callGroq(prompt, temperature: 0.6);
+      final cleanJson = text.replaceAll('```json', '').replaceAll('```', '').trim();
+      final parsed = jsonDecode(cleanJson) as List;
+      return parsed.map((e) {
+        final item = Map<String, dynamic>.from(e as Map);
+        return {
+          'q': item['q']?.toString() ?? 'Question',
+          'a': item['a']?.toString() ?? 'Answer',
+        };
+      }).toList();
+    } catch (e) {
+      debugPrint('Groq FAQ error: $e');
+      return [
+        {'q': 'What makes this product unique?', 'a': 'Engineered with premium materials for outstanding performance.'},
+        {'q': 'Who is it best for?', 'a': 'Designed for enthusiasts and professionals who demand the best.'},
+        {'q': 'How does it compare to competitors?', 'a': 'Top-rated in its category for value, quality, and durability.'},
+      ];
+    }
+  }
+
+  /// Generate personalized product recommendation
+  Future<String> generateRecommendation({
+    required String productName,
+    required String brand,
+    required String category,
+    required List<String> userInterests,
+  }) async {
+    if (!isConfigured) {
+      return 'Based on your interests, the $productName by $brand is an excellent match — combining premium quality with exceptional value in the $category space.';
+    }
+
+    final prompt = '''
+You are an AI shopping advisor. Generate a 1-2 sentence personalized recommendation for:
+Product: $productName by $brand ($category)
+User Interests: ${userInterests.join(', ')}
+
+Be warm, specific, and under 30 words. Reference their interests.
+''';
+
+    try {
+      return await _callGroq(prompt, temperature: 0.7);
+    } catch (e) {
+      debugPrint('Groq recommendation error: $e');
+      return 'The $productName is a great choice for anyone who values quality $category products with exceptional craftsmanship.';
+    }
+  }
+
   Future<String> _callGroq(String prompt, {double temperature = 0.5}) async {
     final key = apiKey;
     if (key == null || key.isEmpty) {

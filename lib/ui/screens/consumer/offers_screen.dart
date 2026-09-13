@@ -68,7 +68,7 @@ class OffersScreen extends StatelessWidget {
           : ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
               itemCount: offers.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 14),
+              separatorBuilder: (_, i) => const SizedBox(height: 14),
               itemBuilder: (context, index) {
                 final item = offers[index];
                 return _OfferCard(item: item);

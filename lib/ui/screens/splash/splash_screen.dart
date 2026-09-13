@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
@@ -35,10 +36,27 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     _controller.forward().then((_) {
       Future.delayed(const Duration(milliseconds: 600), () {
         if (mounted) {
-          context.go('/home');
+          _navigateNext();
         }
       });
     });
+  }
+
+  Future<void> _navigateNext() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final onboardingComplete = prefs.getBool('onboarding_complete') ?? false;
+      if (mounted) {
+        if (onboardingComplete) {
+          context.go('/home');
+        } else {
+          context.go('/onboarding');
+        }
+      }
+    } catch (_) {
+      // Fallback: go directly to home if SharedPreferences fails
+      if (mounted) context.go('/home');
+    }
   }
 
   @override

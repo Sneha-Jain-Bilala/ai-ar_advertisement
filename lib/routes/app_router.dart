@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import '../ui/screens/admin/admin_dashboard_screen.dart';
 import '../ui/screens/advertiser/advertiser_dashboard_screen.dart';
+import '../ui/screens/advertiser/campaign_analytics_screen.dart';
 import '../ui/screens/advertiser/campaign_detail_screen.dart';
 import '../ui/screens/advertiser/create_campaign_screen.dart';
 import '../ui/screens/advertiser/manage_products_screen.dart';
@@ -10,6 +11,7 @@ import '../ui/screens/consumer/ar_viewer_screen.dart';
 import '../ui/screens/consumer/consumer_main_nav.dart';
 import '../ui/screens/consumer/product_detail_screen.dart';
 import '../ui/screens/consumer/qr_scanner_screen.dart';
+import '../ui/screens/onboarding/onboarding_screen.dart';
 import '../ui/screens/splash/splash_screen.dart';
 
 class AppRouter {
@@ -20,6 +22,12 @@ class AppRouter {
       GoRoute(
         path: '/',
         builder: (context, state) => const SplashScreen(),
+      ),
+
+      // Onboarding
+      GoRoute(
+        path: '/onboarding',
+        builder: (context, state) => const OnboardingScreen(),
       ),
 
       // Auth
@@ -38,12 +46,16 @@ class AppRouter {
         builder: (context, state) => const ConsumerMainNav(initialIndex: 1),
       ),
       GoRoute(
-        path: '/saved',
+        path: '/offers',
         builder: (context, state) => const ConsumerMainNav(initialIndex: 2),
       ),
       GoRoute(
-        path: '/profile',
+        path: '/saved',
         builder: (context, state) => const ConsumerMainNav(initialIndex: 3),
+      ),
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => const ConsumerMainNav(initialIndex: 4),
       ),
 
       // QR Scanner
@@ -84,6 +96,13 @@ class AppRouter {
         builder: (context, state) {
           final campaignId = state.pathParameters['campaignId'] ?? '';
           return CampaignDetailScreen(campaignId: campaignId);
+        },
+      ),
+      GoRoute(
+        path: '/advertiser/analytics/:campaignId',
+        builder: (context, state) {
+          final campaignId = state.pathParameters['campaignId'] ?? '';
+          return CampaignAnalyticsScreen(campaignId: campaignId);
         },
       ),
       GoRoute(

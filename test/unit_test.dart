@@ -5,6 +5,8 @@ import 'package:ai_ar_advertisement/data/seed_data.dart';
 import 'package:ai_ar_advertisement/data/models/campaign_model.dart';
 import 'package:ai_ar_advertisement/data/models/product_model.dart';
 import 'package:ai_ar_advertisement/providers/auth_provider.dart';
+import 'package:ai_ar_advertisement/core/utils/validators.dart';
+import 'package:ai_ar_advertisement/data/models/ar_target_model.dart';
 
 void main() {
   group('QrUtils Tests', () {
@@ -107,4 +109,52 @@ void main() {
       expect(auth.isAdSaved(testAd), isFalse);
     });
   });
+
+  group('Validators Tests', () {
+    test('Email validator handles valid and invalid emails', () {
+      expect(Validators.email('test@example.com'), isNull);
+      expect(Validators.email(''), isNotNull);
+      expect(Validators.email('invalid-email'), isNotNull);
+      expect(Validators.email(null), isNotNull);
+    });
+
+    test('Password validator checks minimum length', () {
+      expect(Validators.password('password123'), isNull);
+      expect(Validators.password('12345'), isNotNull);
+      expect(Validators.password(''), isNotNull);
+    });
+
+    test('Required and price validators validate correctly', () {
+      expect(Validators.required('hello', 'Title'), isNull);
+      expect(Validators.required('', 'Title'), contains('required'));
+      expect(Validators.price('99.99'), isNull);
+      expect(Validators.price('-5'), contains('greater than zero'));
+      expect(Validators.price('abc'), contains('valid number'));
+    });
+  });
+
+  group('ArTargetModel Tests', () {
+    test('Round-trip serialization and field verification', () {
+      final target = ArTargetModel(
+        id: 'target_001',
+        campaignId: 'camp_123',
+        productId: 'prod_456',
+        qrData: 'aradvision://campaign/camp_123?product=prod_456',
+        modelPath: 'assets/models/watch.glb',
+        isActive: true,
+      );
+
+      expect(target.qrData, equals('aradvision://campaign/camp_123?product=prod_456'));
+      expect(target.modelPath, equals('assets/models/watch.glb'));
+      final map = target.toMap();
+      final reconstructed = ArTargetModel.fromMap(map, target.id);
+      expect(reconstructed.id, equals('target_001'));
+      expect(reconstructed.campaignId, equals('camp_123'));
+      expect(reconstructed.productId, equals('prod_456'));
+      expect(reconstructed.qrData, equals(target.qrData));
+      expect(reconstructed.modelPath, equals(target.modelPath));
+      expect(reconstructed.isActive, isTrue);
+    });
+  });
 }
+

@@ -17,12 +17,20 @@ class CampaignDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final campaignProvider = context.watch<CampaignProvider>();
-    CampaignModel? campaign;
+    CampaignModel? foundCampaign;
     try {
-      campaign = campaignProvider.campaigns.firstWhere((c) => c.id == campaignId);
+      foundCampaign = campaignProvider.campaigns.firstWhere((c) => c.id == campaignId);
     } catch (_) {
-      campaign = campaignProvider.campaigns.first;
+      foundCampaign = campaignProvider.campaigns.isNotEmpty ? campaignProvider.campaigns.first : null;
     }
+
+    if (foundCampaign == null) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Campaign Details')),
+        body: const Center(child: Text('Campaign not found')),
+      );
+    }
+    final campaign = foundCampaign;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -32,6 +40,13 @@ class CampaignDetailScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
           onPressed: () => context.pop(),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.bar_chart_rounded, size: 22, color: AppColors.primary),
+            tooltip: 'View Analytics',
+            onPressed: () => context.push('/advertiser/analytics/${campaign.id}'),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),

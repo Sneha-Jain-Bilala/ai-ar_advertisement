@@ -4,6 +4,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
 import 'explore_screen.dart';
 import 'home_screen.dart';
+import 'offers_screen.dart';
 import 'profile_screen.dart';
 import 'saved_ads_screen.dart';
 
@@ -22,6 +23,7 @@ class _ConsumerMainNavState extends State<ConsumerMainNav> {
   final List<Widget> _screens = const [
     HomeScreen(),
     ExploreScreen(),
+    OffersScreen(),
     SavedAdsScreen(),
     ProfileScreen(),
   ];
@@ -78,8 +80,8 @@ class _ConsumerMainNavState extends State<ConsumerMainNav> {
                 _buildNavItem(0, Icons.home_rounded, Icons.home_outlined, 'Home'),
                 _buildNavItem(1, Icons.explore_rounded, Icons.explore_outlined, 'Explore'),
                 const SizedBox(width: 44), // Notch gap for floating QR button
-                _buildNavItem(2, Icons.bookmark_rounded, Icons.bookmark_border_rounded, 'Saved'),
-                _buildNavItem(3, Icons.person_rounded, Icons.person_outline_rounded, 'Profile'),
+                _buildNavItem(2, Icons.local_offer_rounded, Icons.local_offer_outlined, 'Offers'),
+                _buildNavItem(3, Icons.bookmark_rounded, Icons.bookmark_border_rounded, 'Saved'),
               ],
             ),
           ),
