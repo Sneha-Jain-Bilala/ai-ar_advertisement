@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "913424258041",
+    "project_id": "apl-pragyaan",
+    "storage_bucket": "apl-pragyaan.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913424258041:android:4691a04a7e3bee6a04e328",
+        "android_client_info": {
+          "package_name": "com.example.ai_ar_advertisement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8C7nBmGHxOv0porlKKyRfKs4VwD_PyAc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
