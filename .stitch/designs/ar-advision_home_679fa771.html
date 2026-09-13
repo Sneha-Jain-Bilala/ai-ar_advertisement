@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AR-AdVision - Interactive AR Ads</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error-container": "#ffdad6",
+            "inverse-primary": "#adc7ff",
+            "outline": "#747781",
+            "outline-variant": "#c3c6d2",
+            "surface-canvas": "#FAFBFE",
+            "hud-glass-surface": "rgba(250, 251, 254, 0.85)",
+            "on-secondary-fixed-variant": "#234f38",
+            "secondary-container": "#bdeece",
+            "inverse-on-surface": "#edf0ff",
+            "primary-fixed-dim": "#adc7ff",
+            "surface-variant": "#dde2f7",
+            "on-error-container": "#93000a",
+            "error": "#ba1a1a",
+            "on-primary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "tertiary-fixed": "#ffdbc7",
+            "tertiary-container": "#c1967c",
+            "on-primary-container": "#003474",
+            "ar-reticle-glow": "rgba(124, 159, 229, 0.35)",
+            "surface": "#faf8ff",
+            "inverse-surface": "#2a3040",
+            "primary-fixed": "#d8e2ff",
+            "on-background": "#151b2a",
+            "on-surface": "#151b2a",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary-container": "#416d54",
+            "secondary": "#3b674e",
+            "on-tertiary-fixed-variant": "#603f2b",
+            "primary": "#395d9f",
+            "surface-container-low": "#f2f3ff",
+            "on-secondary-fixed": "#002111",
+            "surface-dim": "#d4d9ee",
+            "secondary-fixed-dim": "#a2d1b3",
+            "on-tertiary-fixed": "#2e1505",
+            "background": "#faf8ff",
+            "on-secondary": "#ffffff",
+            "text-muted": "#6B7280",
+            "primary-container": "#7c9fe5",
+            "on-primary-fixed-variant": "#1c4585",
+            "secondary-fixed": "#bdeece",
+            "surface-bright": "#faf8ff",
+            "surface-container-high": "#e2e8fc",
+            "on-primary-fixed": "#001a41",
+            "on-tertiary-container": "#4d2f1c",
+            "on-error": "#ffffff",
+            "tertiary": "#7a5740",
+            "on-surface-variant": "#434750",
+            "surface-tint": "#395d9f",
+            "surface-container": "#e9edff",
+            "tertiary-fixed-dim": "#ebbda1",
+            "surface-container-highest": "#dde2f7"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "2rem",
+            "margin-mobile": "1rem",
+            "space-xs": "0.25rem",
+            "gutter-mobile": "0.75rem",
+            "margin": "1.5rem",
+            "space-md": "1rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "body-md": ["Inter"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "body-lg": ["Inter"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Inter"],
+            "headline-xl": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-xl-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-canvas text-on-surface antialiased font-body-md min-h-screen flex justify-center selection:bg-primary-container/20">
+<!-- Mobile Screen Wrapper Container (max-w-md for mobile frame) -->
+<div class="w-full max-w-md bg-surface-canvas min-h-screen flex flex-col relative pb-28 shadow-2xl">
+<!-- Top Navigation Anchor (Shared Component JSON Implementation) -->
+<header class="sticky top-0 z-40 bg-surface-canvas/80 backdrop-blur-md dark:bg-inverse-surface/80 shadow-sm transition-colors border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full px-margin-mobile py-space-sm max-w-md mx-auto">
+<!-- Leading / Profile Identity -->
+<div class="flex items-center space-x-3">
+<div class="relative w-9 h-9 rounded-full ring-2 ring-primary-container/40 p-0.5 overflow-hidden active:scale-95 duration-150 transition-transform cursor-pointer">
+<img class="w-full h-full object-cover rounded-full" data-alt="A high-key portrait of a modern young person named Alex wearing stylish minimalist glasses, smiling in soft daylight with a clean pastel off-white and pale lavender studio backdrop reflecting high-tech elegance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6xAZzeky14k6c50_bu9vH6Hc2md4ivKR7MAxF20NOe4JKTLLXbhw_A1oHgf2Kfi91wys_3eR6k-GGpZwo2Q_PKvEowvSJMPW8JjXPFWN-UztonHqXGeUnd4gclFwEWCAuEoWpoIKAUbeisR8LvyYnYp2Crb_GnDk95ORQtimU7NmJx9bFZgyZrSo4AeYi2uTKJE--BJcqYYBLsrC24oKYAYrKgGBH7vBaNwGsxYv4PZP-8SfY9PwrgaGL8U47suyiEFMhsGsDn2s"/>
+</div>
+<div>
+<div class="flex items-center space-x-1">
+<span class="text-headline-sm font-headline-sm text-on-surface font-bold">Hello, Alex</span>
+<span class="text-sm">✨</span>
+</div>
+<p class="text-label-sm font-label-sm text-text-muted">Discover next-gen interactive ads</p>
+</div>
+</div>
+<!-- Trailing Actions / Notifications -->
+<div class="flex items-center space-x-1.5">
+<button aria-label="Notifications" class="relative p-2 rounded-full hover:bg-surface-container transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-primary font-medium" data-icon="notifications">notifications</span>
+<!-- Pastel Peach Unread Indicator Dot -->
+<span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-[#F5C6AA] ring-2 ring-surface-canvas rounded-full animate-pulse"></span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas Area -->
+<main class="flex-1 px-margin-mobile pt-3 space-y-5">
+<!-- Search & Voice Input -->
+<section class="relative">
+<div class="flex items-center bg-[#F2F5FB] rounded-full px-3.5 py-2.5 border border-transparent focus-within:border-primary-container focus-within:bg-surface-container-lowest transition-all duration-200 shadow-sm">
+<span class="material-symbols-outlined text-text-muted text-xl mr-2.5" data-icon="search">search</span>
+<input class="bg-transparent text-body-sm font-body-sm text-on-surface placeholder:text-text-muted/80 outline-none w-full border-none focus:ring-0 p-0" placeholder="Search AR campaigns, brands, or products..." type="text"/>
+<button aria-label="Voice Search" class="flex items-center justify-center p-1 rounded-full text-text-muted hover:text-primary active:scale-95 transition-all">
+<span class="material-symbols-outlined text-xl" data-icon="mic">mic</span>
+</button>
+</div>
+</section>
+<!-- Hero Banner: Experience Ads in 3D -->
+<section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#EEF4FF] via-[#F4F8FE] to-[#E8F7EE] p-5 border border-white/80 shadow-[0_4px_20px_-2px_rgba(30,36,51,0.04),0_2px_6px_-1px_rgba(124,159,229,0.08)]">
+<!-- Floating Subtle Holographic Elements -->
+<div class="absolute -right-6 -top-6 w-32 h-32 bg-primary-container/20 rounded-full blur-2xl pointer-events-none"></div>
+<div class="absolute right-4 bottom-2 w-24 h-24 bg-[#A8D8B9]/30 rounded-full blur-xl pointer-events-none"></div>
+<div class="relative z-10 flex items-start justify-between">
+<div class="max-w-[62%]">
+<span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-primary-container/15 text-primary text-label-sm font-label-sm mb-2 border border-primary-container/30">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+<span>Live Spatial Feed</span>
+</span>
+<h2 class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface tracking-tight leading-tight">
+              Experience Ads in 3D
+            </h2>
+<p class="text-body-sm font-body-sm text-text-muted mt-1 leading-relaxed">
+              Bring static ads to life in your living room with spatial anchoring.
+            </p>
+<button class="mt-4 inline-flex items-center space-x-2 bg-[#7C9FE5] hover:bg-primary text-on-primary font-label-md text-label-md px-4 py-2.5 rounded-full shadow-[0_4px_14px_0_rgba(124,159,229,0.39)] active:scale-95 transition-all duration-150">
+<span class="material-symbols-outlined text-lg" data-icon="photo_camera">photo_camera</span>
+<span class="tracking-wide">Scan AR Ad Now</span>
+</button>
+</div>
+<!-- 3D AR Prism / Cube Hologram Visual -->
+<div class="relative w-28 h-28 flex items-center justify-center">
+<div class="absolute inset-0 bg-white/40 rounded-2xl backdrop-blur-sm border border-white/60 rotate-6 shadow-sm"></div>
+<div class="relative z-10 w-20 h-20 rounded-xl bg-gradient-to-tr from-[#7C9FE5]/20 to-[#A8D8B9]/40 border border-white/80 p-1 flex items-center justify-center shadow-inner group">
+<span class="material-symbols-outlined text-4xl text-primary drop-shadow-[0_4px_10px_rgba(124,159,229,0.4)] group-hover:scale-110 transition-transform duration-300" data-icon="view_in_ar">view_in_ar</span>
+<span class="absolute -top-1 -right-1 text-xs">✨</span>
+<span class="absolute bottom-1 left-1 text-[10px]">✨</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Category Filter Chips -->
+<section class="no-scrollbar overflow-x-auto -mx-margin-mobile px-margin-mobile py-1">
+<div class="flex items-center space-x-2 min-w-max">
+<!-- Active: All -->
+<button class="px-4 py-1.5 rounded-full bg-[#7C9FE5] text-on-primary text-label-md font-label-md shadow-[0_2px_8px_rgba(124,159,229,0.3)] transition-all">
+            All
+          </button>
+<!-- Inactive: Electronics -->
+<button class="px-4 py-1.5 rounded-full bg-surface-container-lowest text-text-muted hover:text-primary text-label-md font-label-md border border-[#E5E9F2] hover:border-primary-container/40 transition-all active:scale-95">
+            Electronics
+          </button>
+<!-- Inactive: Fashion -->
+<button class="px-4 py-1.5 rounded-full bg-surface-container-lowest text-text-muted hover:text-primary text-label-md font-label-md border border-[#E5E9F2] hover:border-primary-container/40 transition-all active:scale-95">
+            Fashion
+          </button>
+<!-- Inactive: Beverages -->
+<button class="px-4 py-1.5 rounded-full bg-surface-container-lowest text-text-muted hover:text-primary text-label-md font-label-md border border-[#E5E9F2] hover:border-primary-container/40 transition-all active:scale-95">
+            Beverages
+          </button>
+<!-- Inactive: Accessories -->
+<button class="px-4 py-1.5 rounded-full bg-surface-container-lowest text-text-muted hover:text-primary text-label-md font-label-md border border-[#E5E9F2] hover:border-primary-container/40 transition-all active:scale-95">
+            Accessories
+          </button>
+<!-- Inactive: Automotive -->
+<button class="px-4 py-1.5 rounded-full bg-surface-container-lowest text-text-muted hover:text-primary text-label-md font-label-md border border-[#E5E9F2] hover:border-primary-container/40 transition-all active:scale-95">
+            Automotive
+          </button>
+</div>
+</section>
+<!-- Featured AR Experiences Section -->
+<section class="space-y-3 pt-1">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Featured AR Experiences</h3>
+<p class="text-body-sm font-body-sm text-text-muted">High-definition spatial previews</p>
+</div>
+<button class="text-label-md font-label-md text-primary hover:underline inline-flex items-center">
+<span>See All</span>
+<span class="material-symbols-outlined text-sm ml-0.5" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<!-- Horizontal Carousel -->
+<div class="no-scrollbar flex space-x-3.5 overflow-x-auto -mx-margin-mobile px-margin-mobile pb-2">
+<!-- Card 1: Nova X Pro Smartphone -->
+<div class="min-w-[240px] w-[240px] bg-white rounded-2xl p-3 border border-[#E5E9F2] shadow-[0_4px_20px_-2px_rgba(30,36,51,0.04),0_2px_6px_-1px_rgba(124,159,229,0.06)] flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="relative w-full h-32 rounded-xl overflow-hidden bg-slate-50 mb-3 border border-outline-variant/20">
+<img class="w-full h-full object-cover" data-alt="A sleek high-end flagship smartphone suspended in an off-white minimalist AR studio, projecting luminous holographic blue technical specifications and 3D wireframe camera components in soft ambient pastel lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBG-tsqtWsbQiIlfzDSnCc4UtG3hjUAR1-galDoCNzEKzk9_ZiK3LDyPZxFJjUxN1kzu2xtlIdNd3yDU6a_Ay_GRkdmSgeDpOW8rO7uxvuYlGiH3SZ0_4V3H0JEVMuyjTKDA1pJW1DvuRZ7e30k5x0bQrKCPBDTYgJapPameT1wg9M4IrMGouEEOhg0DtLLJceXXcpOjWSBt0OZu9lGY_HzZfJpR_TMgwqxYHVX1bHsw9bWxDQQU1L2uWHk5_r6cduo5dvEE03_90g"/>
+<!-- AR Ready Badge -->
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-[#A8D8B9]/30 backdrop-blur-md border border-[#A8D8B9]/60 text-secondary text-label-sm font-label-sm font-bold flex items-center space-x-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>AR Ready</span>
+</span>
+<!-- View Count Tag -->
+<span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-full bg-black/40 backdrop-blur-md text-white text-[10px] font-medium flex items-center space-x-1">
+<span class="material-symbols-outlined text-xs" data-icon="visibility">visibility</span>
+<span>24.5k</span>
+</span>
+</div>
+<div>
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-text-muted">NovaTech</span>
+<span class="text-label-sm font-label-sm px-1.5 py-0.5 rounded bg-surface-container text-primary font-medium">Gadgets</span>
+</div>
+<h4 class="text-body-md font-semibold text-on-surface truncate mt-0.5">Nova X Pro Smartphone</h4>
+<button class="mt-3 w-full py-2 rounded-full bg-[#7C9FE5]/15 hover:bg-[#7C9FE5] text-[#395D9F] hover:text-white font-label-md text-label-md border border-[#7C9FE5]/30 flex items-center justify-center space-x-1.5 transition-all duration-150 active:scale-95">
+<span class="material-symbols-outlined text-base" data-icon="view_in_ar">view_in_ar</span>
+<span>View in AR</span>
+</button>
+</div>
+</div>
+<!-- Card 2: AeroGlide Running Shoes -->
+<div class="min-w-[240px] w-[240px] bg-white rounded-2xl p-3 border border-[#E5E9F2] shadow-[0_4px_20px_-2px_rgba(30,36,51,0.04),0_2px_6px_-1px_rgba(124,159,229,0.06)] flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="relative w-full h-32 rounded-xl overflow-hidden bg-slate-50 mb-3 border border-outline-variant/20">
+<img class="w-full h-full object-cover" data-alt="A futuristic modern running sneaker floating dynamically at an angle, displaying glowing pastel peach and mint sole cushioning layers with spatial geometry grids in a light airy environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjHxTaBf9dneZgoQ7Ert-CbexqDTOxhxA7Cs3dRCrk1bcrjId4HtCWlhborOJHRXeihcuAjTqce8CFMUpkvNRE6qOgJkN3MclCl6jayMygcMf96i4Y-gbCyG3Q3eVOxUhA25s9scXeLBnEh-FP1BHzt06pVdqElkeklKOI4x4Ji397rjIt0Qh5QcXMYx1qKNhkk_gqiMkNEyY0YMFlaud72fEeLcKaZkVdvMNo_y81vaeLvOYrwktywzaQpy2W2MsZ3MeeHGqeRjA"/>
+<!-- AR Ready Badge -->
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-[#A8D8B9]/30 backdrop-blur-md border border-[#A8D8B9]/60 text-secondary text-label-sm font-label-sm font-bold flex items-center space-x-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>AR Ready</span>
+</span>
+<!-- View Count Tag -->
+<span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-full bg-black/40 backdrop-blur-md text-white text-[10px] font-medium flex items-center space-x-1">
+<span class="material-symbols-outlined text-xs" data-icon="visibility">visibility</span>
+<span>18.2k</span>
+</span>
+</div>
+<div>
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-text-muted">VeloSport</span>
+<span class="text-label-sm font-label-sm px-1.5 py-0.5 rounded bg-surface-container text-primary font-medium">Footwear</span>
+</div>
+<h4 class="text-body-md font-semibold text-on-surface truncate mt-0.5">AeroGlide Running Shoes</h4>
+<button class="mt-3 w-full py-2 rounded-full bg-[#7C9FE5]/15 hover:bg-[#7C9FE5] text-[#395D9F] hover:text-white font-label-md text-label-md border border-[#7C9FE5]/30 flex items-center justify-center space-x-1.5 transition-all duration-150 active:scale-95">
+<span class="material-symbols-outlined text-base" data-icon="view_in_ar">view_in_ar</span>
+<span>View in AR</span>
+</button>
+</div>
+</div>
+<!-- Card 3: Sparkle Fizz Berry -->
+<div class="min-w-[240px] w-[240px] bg-white rounded-2xl p-3 border border-[#E5E9F2] shadow-[0_4px_20px_-2px_rgba(30,36,51,0.04),0_2px_6px_-1px_rgba(124,159,229,0.06)] flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="relative w-full h-32 rounded-xl overflow-hidden bg-slate-50 mb-3 border border-outline-variant/20">
+<img class="w-full h-full object-cover" data-alt="A premium slim craft beverage can with floating augmented reality translucent berry bubbles and water splash effects in a bright, ethereal studio setting with pastel mint reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAy-fMW-ZnEmcYlcbgOGQMPDwH6awy1qWv0vkGYDl0_vQZm2ddB3dGx_yixFBXX6SncFJ5IezFP6sHNAY0AEtom3k8rlvzAgdPyFfIoz7HnuVkY6I2FKtAyxJnmN1V-4NnuBZVogpwnwNn1UHzvmaCWVHopjCiDo7Sn3Fa7KcJnhda9EYGDm_qrIb19zo56OrthrPtWgYWJPeeSJOMxPxf64tmNEET69nA_E9UcFfYBCPcQVPrGy0gMvYOYq_5Rs7b-f8lM7HICwSQ"/>
+<!-- AR Ready Badge -->
+<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-[#A8D8B9]/30 backdrop-blur-md border border-[#A8D8B9]/60 text-secondary text-label-sm font-label-sm font-bold flex items-center space-x-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>AR Ready</span>
+</span>
+<!-- View Count Tag -->
+<span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-full bg-black/40 backdrop-blur-md text-white text-[10px] font-medium flex items-center space-x-1">
+<span class="material-symbols-outlined text-xs" data-icon="visibility">visibility</span>
+<span>12.8k</span>
+</span>
+</div>
+<div>
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-text-muted">FizzCo</span>
+<span class="text-label-sm font-label-sm px-1.5 py-0.5 rounded bg-surface-container text-primary font-medium">Drinks</span>
+</div>
+<h4 class="text-body-md font-semibold text-on-surface truncate mt-0.5">Sparkle Fizz Berry</h4>
+<button class="mt-3 w-full py-2 rounded-full bg-[#7C9FE5]/15 hover:bg-[#7C9FE5] text-[#395D9F] hover:text-white font-label-md text-label-md border border-[#7C9FE5]/30 flex items-center justify-center space-x-1.5 transition-all duration-150 active:scale-95">
+<span class="material-symbols-outlined text-base" data-icon="view_in_ar">view_in_ar</span>
+<span>View in AR</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Trending Offers Section 🔥 -->
+<section class="space-y-3 pt-1">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5">
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Trending Offers 🔥</h3>
+<span class="px-2 py-0.5 rounded-full bg-[#F5C6AA]/30 text-tertiary text-[11px] font-semibold border border-[#F5C6AA]/50">Limited Time</span>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<!-- Offer Card 1 -->
+<div class="rounded-2xl p-4 bg-[#FFF1E8] border border-[#F5C6AA]/40 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<span class="inline-block px-2.5 py-0.5 rounded-full bg-[#F5C6AA] text-[#603F2B] font-label-sm text-label-sm font-bold tracking-wide shadow-xs mb-1.5">
+                  20% OFF
+                </span>
+<h4 class="text-body-md font-bold text-on-surface">Nova X Pro AR Launch Discount</h4>
+<p class="text-body-sm text-text-muted mt-0.5">Scan product in 3D to reveal the claimable barcode voucher.</p>
+</div>
+<div class="p-2 rounded-xl bg-white/70 border border-[#F5C6AA]/40 text-tertiary">
+<span class="material-symbols-outlined" data-icon="local_activity">local_activity</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-3 pt-2.5 border-t border-[#F5C6AA]/30">
+<span class="inline-flex items-center text-label-sm font-label-sm font-medium text-tertiary bg-white/80 px-2.5 py-1 rounded-full border border-[#F5C6AA]/30">
+                ⏳ 04h : 32m : 15s
+              </span>
+<button class="px-4 py-1.5 rounded-full bg-[#7A5740] hover:bg-[#603F2B] text-white text-label-md font-label-md shadow-sm active:scale-95 transition-all">
+                Claim Voucher
+              </button>
+</div>
+</div>
+<!-- Offer Card 2 -->
+<div class="rounded-2xl p-4 bg-[#F2FAF5] border border-[#A8D8B9]/50 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<span class="inline-block px-2.5 py-0.5 rounded-full bg-[#A8D8B9] text-secondary font-label-sm text-label-sm font-bold tracking-wide shadow-xs mb-1.5">
+                  Exclusive Drop
+                </span>
+<h4 class="text-body-md font-bold text-on-surface">AeroGlide Early Access Token</h4>
+<p class="text-body-sm text-text-muted mt-0.5">Complete the 360° AR preview to qualify for priority queue release.</p>
+</div>
+<div class="p-2 rounded-xl bg-white/70 border border-[#A8D8B9]/40 text-secondary">
+<span class="material-symbols-outlined" data-icon="stars">stars</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-3 pt-2.5 border-t border-[#A8D8B9]/30">
+<span class="inline-flex items-center text-label-sm font-label-sm font-medium text-secondary bg-white/80 px-2.5 py-1 rounded-full border border-[#A8D8B9]/30">
+                ⏳ 12h : 45m left
+              </span>
+<button class="px-4 py-1.5 rounded-full bg-[#3B674E] hover:bg-[#234F38] text-white text-label-md font-label-md shadow-sm active:scale-95 transition-all">
+                Unlock Offer
+              </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Docked Glassmorphic Navigation with Center AR Scanner FAB) -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
+<div class="w-full max-w-md pointer-events-auto bg-hud-glass-surface/90 backdrop-blur-xl dark:bg-inverse-surface/90 shadow-[0_-4px_24px_-4px_rgba(124,159,229,0.18)] dark:shadow-none flex justify-around items-center px-gutter-mobile py-2">
+<!-- Tab 1: Discover / Home (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim rounded-full px-3 py-1.5 font-label-sm transition-all duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="explore" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="text-label-sm font-label-sm font-bold mt-0.5">Discover</span>
+</a>
+<!-- Tab 2: Saved -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-outline-variant px-3 py-1.5 font-label-sm hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="bookmark">bookmark</span>
+<span class="text-label-sm font-label-sm mt-0.5">Saved</span>
+</a>
+<!-- Prominent Center Spatial AR Action Trigger -->
+<div class="relative -top-5 flex flex-col items-center">
+<button aria-label="Scan AR Ad" class="w-13 h-13 p-3.5 rounded-full bg-[#7C9FE5] hover:bg-primary text-white shadow-[0_8px_20px_rgba(124,159,229,0.55)] border-4 border-surface-canvas flex items-center justify-center transition-all duration-200 active:scale-90">
+<span class="material-symbols-outlined text-2xl" data-icon="qr_code_scanner">qr_code_scanner</span>
+</button>
+<span class="text-[10px] font-bold text-primary mt-1">Scan</span>
+</div>
+<!-- Tab 3: Campaigns -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-outline-variant px-3 py-1.5 font-label-sm hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="view_in_ar">view_in_ar</span>
+<span class="text-label-sm font-label-sm mt-0.5">Campaigns</span>
+</a>
+<!-- Tab 4: Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-outline-variant px-3 py-1.5 font-label-sm hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="person">person</span>
+<span class="text-label-sm font-label-sm mt-0.5">Profile</span>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

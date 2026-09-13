@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AR-AdVision | Spatial Authentication</title>
+<!-- Google Fonts: Plus Jakarta Sans & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration matching the Spatial Design System Tokens -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary-fixed": "#ffdbc7",
+            "primary-fixed": "#d8e2ff",
+            "secondary-container": "#bdeece",
+            "ar-reticle-glow": "rgba(124, 159, 229, 0.35)",
+            "on-background": "#151b2a",
+            "error": "#ba1a1a",
+            "on-surface-variant": "#434750",
+            "on-primary-fixed": "#001a41",
+            "on-secondary-fixed-variant": "#234f38",
+            "surface-dim": "#d4d9ee",
+            "on-tertiary-fixed": "#2e1505",
+            "hud-glass-surface": "rgba(250, 251, 254, 0.75)",
+            "on-tertiary-container": "#4d2f1c",
+            "on-primary-fixed-variant": "#1c4585",
+            "surface-bright": "#faf8ff",
+            "error-container": "#ffdad6",
+            "inverse-primary": "#adc7ff",
+            "on-error-container": "#93000a",
+            "surface-canvas": "#FAFBFE",
+            "on-secondary": "#ffffff",
+            "secondary-fixed-dim": "#a2d1b3",
+            "on-primary-container": "#003474",
+            "background": "#faf8ff",
+            "inverse-surface": "#2a3040",
+            "on-secondary-fixed": "#002111",
+            "surface-container-lowest": "#ffffff",
+            "outline-variant": "#c3c6d2",
+            "on-error": "#ffffff",
+            "surface-variant": "#dde2f7",
+            "secondary-fixed": "#bdeece",
+            "on-primary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "surface-container-highest": "#dde2f7",
+            "surface-container": "#e9edff",
+            "secondary": "#3b674e",
+            "surface-container-high": "#e2e8fc",
+            "primary": "#395d9f",
+            "tertiary-fixed-dim": "#ebbda1",
+            "surface": "#faf8ff",
+            "on-surface": "#151b2a",
+            "primary-container": "#7c9fe5",
+            "primary-fixed-dim": "#adc7ff",
+            "on-secondary-container": "#416d54",
+            "inverse-on-surface": "#edf0ff",
+            "tertiary": "#7a5740",
+            "outline": "#747781",
+            "tertiary-container": "#c1967c",
+            "surface-tint": "#395d9f",
+            "on-tertiary-fixed-variant": "#603f2b",
+            "surface-container-low": "#f2f3ff",
+            "text-muted": "#6B7280"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "margin-mobile": "1rem",
+            "space-xl": "2rem",
+            "gutter-mobile": "0.75rem",
+            "space-sm": "0.5rem",
+            "gutter": "1rem",
+            "margin": "1.5rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Inter"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-xl-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    
+    /* Soft ambient spatial pulse */
+    @keyframes subtle-pulse {
+      0%, 100% { transform: scale(1) translate3d(0, 0, 0); opacity: 0.65; }
+      50% { transform: scale(1.06) translate3d(4px, -6px, 0); opacity: 0.85; }
+    }
+    .animate-spatial-orb {
+      animation: subtle-pulse 9s ease-in-out infinite;
+    }
+    .animate-spatial-orb-delay {
+      animation: subtle-pulse 11s ease-in-out infinite 3s;
+    }
+    
+    /* Smooth focus rings */
+    .spatial-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(124, 159, 229, 0.28);
+      border-color: #7C9FE5;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-canvas text-on-surface antialiased min-h-screen relative selection:bg-primary-fixed-dim selection:text-on-primary-fixed overflow-x-hidden flex justify-center items-start py-0 sm:py-6">
+<!-- Spatial Background Canvas Elements -->
+<div aria-hidden="true" class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+<!-- Ambient glowing pastel orb 1: Cornflower Lavender -->
+<div class="absolute -top-16 -right-14 w-80 h-80 rounded-full bg-primary-container/25 blur-3xl animate-spatial-orb"></div>
+<!-- Ambient glowing pastel orb 2: Ethereal Mint -->
+<div class="absolute top-1/3 -left-20 w-72 h-72 rounded-full bg-secondary-container/35 blur-3xl animate-spatial-orb-delay"></div>
+<!-- Ambient glowing pastel orb 3: Soft Peach / Lilac Depth -->
+<div class="absolute bottom-10 right-0 w-88 h-88 rounded-full bg-primary-fixed/40 blur-3xl"></div>
+<!-- Delicate AR Geometric Grid Reticle -->
+<div class="absolute top-12 left-8 w-24 h-24 border border-dashed border-primary-container/30 rounded-full opacity-60"></div>
+<div class="absolute top-20 left-16 w-8 h-8 border border-primary-container/40 rounded-full"></div>
+<div class="absolute top-36 right-12 w-32 h-32 border border-primary-container/20 rounded-full opacity-40"></div>
+</div>
+<!-- Primary Mobile Experience Shell (max-w-md constraint) -->
+<main class="relative z-10 w-full max-w-md min-h-screen sm:min-h-[844px] flex flex-col justify-between px-margin-mobile pb-6 pt-2">
+<!-- Mobile Device Status Bar Simulator -->
+<header class="w-full flex justify-between items-center px-space-xs py-space-xs text-on-surface">
+<span class="font-label-md text-label-md font-semibold tracking-tight">9:41</span>
+<div class="flex items-center space-x-1.5 opacity-80">
+<span class="material-symbols-outlined text-[16px]" data-icon="signal_cellular_alt">signal_cellular_alt</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="wifi">wifi</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="battery_full">battery_full</span>
+</div>
+</header>
+<!-- Top Spatial Branding Header -->
+<section class="flex flex-col items-center text-center mt-2 mb-4">
+<!-- 3D Spatial Hologram Cube Logo Mark -->
+<div class="relative w-16 h-16 mb-2.5 flex items-center justify-center">
+<!-- Diffused soft back glow -->
+<div class="absolute inset-0 rounded-2xl bg-primary-container/30 blur-lg"></div>
+<!-- Frosted Glass Icon Surface -->
+<div class="relative w-14 h-14 rounded-2xl bg-surface-container-lowest/90 backdrop-blur-md border border-white flex items-center justify-center shadow-[0_4px_20px_-2px_rgba(124,159,229,0.22)]">
+<span class="material-symbols-outlined text-primary-container text-[28px]" data-icon="view_in_ar">view_in_ar</span>
+<!-- Spatial Reticle Corner Dots -->
+<span class="absolute top-1.5 left-1.5 w-1 h-1 rounded-full bg-secondary-fixed-dim"></span>
+<span class="absolute bottom-1.5 right-1.5 w-1 h-1 rounded-full bg-primary-container"></span>
+</div>
+<!-- Ambient Floating AR Sparkle Indicator -->
+<div class="absolute -top-1 -right-1 bg-surface-container-lowest rounded-full p-1 border border-outline-variant/40 shadow-xs flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[12px]" data-icon="sparkles">arrow_back_ios_new</span>
+</div>
+</div>
+<!-- App Title -->
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary tracking-tight">
+        AR-AdVision
+      </h1>
+<!-- Spatial Brand Tagline -->
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5 max-w-[260px]">
+        Bring Everyday Ads to Life in AR
+      </p>
+<!-- Spatial Anchor Chip Indicator -->
+<div class="mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container/30 border border-secondary-fixed-dim/40 text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Spatial Engine Calibrated</span>
+</div>
+</section>
+<!-- Role Selection Segmented Control (Explorer vs Brand) -->
+<nav aria-label="Account Role Switcher" class="w-full mb-3">
+<div class="bg-surface-container-low/90 backdrop-blur-md p-1 rounded-full border border-outline-variant/25 flex relative shadow-xs">
+<!-- Option 1: Explorer -->
+<button class="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-full bg-primary-container text-white shadow-sm transition-all duration-200" id="role-explorer-btn" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="travel_explore">travel_explore</span>
+<span class="font-label-md text-label-md font-semibold">I'm an Explorer</span>
+</button>
+<!-- Option 2: Brand -->
+<button class="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-full text-on-surface-variant/80 hover:text-primary transition-all duration-200" id="role-brand-btn" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="campaign">campaign</span>
+<span class="font-label-md text-label-md font-semibold">I'm a Brand</span>
+</button>
+</div>
+</nav>
+<!-- Main Auth Card Container -->
+<section class="bg-surface-container-lowest/95 backdrop-blur-xl rounded-3xl border border-outline-variant/30 p-5 shadow-[0_8px_32px_-4px_rgba(124,159,229,0.14)] relative">
+<!-- Auth Navigation Mode Switcher: Sign In vs Create Account -->
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-3 mb-4">
+<div class="flex space-x-6">
+<button class="font-headline-sm text-headline-sm font-bold text-primary relative transition-colors duration-150" id="tab-signin-btn" type="button">
+            Sign In
+            <span class="absolute -bottom-3 left-0 right-0 h-0.5 bg-primary-container rounded-full transition-all duration-200" id="tab-indicator"></span>
+</button>
+<button class="font-headline-sm text-headline-sm font-semibold text-text-muted hover:text-on-surface transition-colors duration-150" id="tab-register-btn" type="button">
+            Create Account
+          </button>
+</div>
+<!-- Ambient AR Hotspot Badge -->
+<div class="flex items-center space-x-1 bg-surface-container-low px-2 py-0.5 rounded-full border border-outline-variant/30">
+<span class="material-symbols-outlined text-[13px] text-primary" data-icon="view_in_ar">view_in_ar</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Spatial Sync</span>
+</div>
+</div>
+<!-- Interactive Form Body -->
+<form class="space-y-3.5" id="auth-form" onsubmit="event.preventDefault();">
+<!-- Dynamic Brand Name Field (Toggled on Brand Role selection) -->
+<div class="hidden space-y-1 transition-all duration-200" id="brand-field-wrapper">
+<label class="block font-label-md text-label-md text-text-muted font-medium" for="brand-name">Brand or Agency Name</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px]" data-icon="business">business</span>
+<input class="spatial-input w-full pl-10 pr-3.5 py-2.5 bg-surface-container-low border border-outline-variant/40 rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline/70 transition-all duration-150" id="brand-name" name="brand_name" placeholder="e.g. Lumina Studio AR" type="text"/>
+</div>
+</div>
+<!-- Dynamic Full Name Field (Toggled on Create Account Tab) -->
+<div class="hidden space-y-1 transition-all duration-200" id="name-field-wrapper">
+<label class="block font-label-md text-label-md text-text-muted font-medium" for="user-fullname">Full Name</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px]" data-icon="badge">badge</span>
+<input class="spatial-input w-full pl-10 pr-3.5 py-2.5 bg-surface-container-low border border-outline-variant/40 rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline/70 transition-all duration-150" id="user-fullname" name="full_name" placeholder="Alex Vance" type="text"/>
+</div>
+</div>
+<!-- Email Field -->
+<div class="space-y-1">
+<div class="flex justify-between items-center">
+<label class="block font-label-md text-label-md text-text-muted font-medium" for="email">Email Address</label>
+<span class="font-label-sm text-label-sm text-primary/80 font-medium" id="role-context-hint">Explorer ID</span>
+</div>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px]" data-icon="mail">mail</span>
+<input class="spatial-input w-full pl-10 pr-3.5 py-2.5 bg-surface-container-low border border-outline-variant/40 rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline/70 transition-all duration-150" id="email" name="email" placeholder="alex@example.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-1">
+<div class="flex justify-between items-center">
+<label class="block font-label-md text-label-md text-text-muted font-medium" for="password">Password</label>
+<button class="font-label-md text-label-md text-primary hover:text-on-primary-container font-semibold transition-colors" id="forgot-password-link" type="button">
+              Forgot Password?
+            </button>
+</div>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px]" data-icon="lock">lock</span>
+<input class="spatial-input w-full pl-10 pr-10 py-2.5 bg-surface-container-low border border-outline-variant/40 rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline/70 transition-all duration-150" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<button aria-label="Toggle password visibility" class="absolute right-3 text-outline hover:text-on-surface p-1 rounded-md transition-colors" id="toggle-password-btn" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility" id="password-eye-icon">visibility</span>
+</button>
+</div>
+</div>
+<!-- Primary Action CTA Button -->
+<button class="w-full mt-2 py-3 px-space-md rounded-full bg-primary-container text-white font-label-lg text-label-lg font-bold flex items-center justify-center space-x-2 shadow-[0_4px_16px_-2px_rgba(124,159,229,0.4)] hover:brightness-105 active:scale-[0.98] transition-all duration-150 cursor-pointer" id="submit-auth-btn" type="submit">
+<span id="submit-btn-text">Sign In</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
+<!-- Soft Divider -->
+<div class="relative my-4 flex items-center justify-center">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant/30"></div>
+</div>
+<span class="relative px-3 bg-surface-container-lowest font-label-sm text-label-sm text-text-muted uppercase tracking-wider">
+          Or continue with
+        </span>
+</div>
+<!-- Quick Social Auth Grid -->
+<div class="grid grid-cols-2 gap-2.5">
+<!-- Google Sign In -->
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 font-label-md text-label-md text-on-surface transition-all active:scale-[0.98]" type="button">
+<svg aria-hidden="true" class="w-4 h-4" viewbox="0 0 24 24">
+<path d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z" fill="#4285F4"></path>
+<path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z" fill="#34A853"></path>
+<path d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.04 0 12s.45 3.82 1.25 5.42l4.03-3.15z" fill="#FBBC05"></path>
+<path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" fill="#EA4335"></path>
+</svg>
+<span>Google</span>
+</button>
+<!-- Apple ID Sign In -->
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 font-label-md text-label-md text-on-surface transition-all active:scale-[0.98]" type="button">
+<svg aria-hidden="true" class="w-4 h-4 fill-current" viewbox="0 0 170 170">
+<path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.69-3.08-7.77-8.08-12.24-15-5.6-8.71-10.04-18.99-13.32-30.84-3.28-11.85-4.92-23.47-4.92-34.86 0-14.23 3.64-26.06 10.92-35.49 7.28-9.43 16.48-14.28 27.6-14.54 5.37 0 11.04 1.34 17.02 4.02 5.97 2.68 9.77 4.08 11.4 4.19 1.4.11 5.31-1.34 11.73-4.35 6.42-3.01 12.24-4.35 17.47-4.02 12.98.67 23.37 5.56 31.18 14.67-11.42 6.94-17.02 16.5-16.8 28.69.22 9.53 3.91 17.47 11.07 23.82 7.16 6.35 15.77 9.87 25.82 10.57-2.35 7.16-5.26 14.34-8.73 21.57zM119.22 33.64c0-7.39 2.68-14.24 8.04-20.54 5.36-6.3 12.02-10.22 19.98-11.76.22 1.01.34 2.01.34 3.02 0 7.39-2.8 14.46-8.39 21.2-5.59 6.74-12.35 10.63-20.28 11.66-.45-1.12-.69-2.31-.69-3.58z"></path>
+</svg>
+<span>Apple</span>
+</button>
+</div>
+<!-- Guest Explorer Bypass Option -->
+<div class="mt-3">
+<button class="w-full py-2.5 px-3 rounded-full border border-secondary-fixed-dim/60 bg-secondary-container/20 hover:bg-secondary-container/30 text-on-secondary-fixed-variant font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary" data-icon="explore">explore</span>
+<span>Continue as Guest Explorer</span>
+</button>
+</div>
+</section>
+<!-- Bottom Footer Links & Policy -->
+<footer class="mt-4 text-center px- space-y-2">
+<!-- Alternate Tab Switcher Link -->
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+<span id="footer-prompt-text">Don't have an account?</span>
+<button class="font-label-md text-label-md font-bold text-primary hover:underline ml-1" id="footer-toggle-btn" type="button">
+          Sign Up
+        </button>
+</p>
+<!-- Legal & Privacy Notice -->
+<p class="font-body-sm text-body-sm text-outline text-[11px] leading-relaxed max-w-[320px] mx-auto">
+        By continuing, you agree to AR-AdVision's 
+        <a class="underline hover:text-on-surface" href="#">Terms of Service</a> &amp; 
+        <a class="underline hover:text-on-surface" href="#">Spatial Privacy Policy</a>.
+      </p>
+</footer>
+</main>
+<!-- Dynamic Interaction Logic -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Elements
+      const explorerBtn = document.getElementById('role-explorer-btn');
+      const brandBtn = document.getElementById('role-brand-btn');
+      const roleHint = document.getElementById('role-context-hint');
+      const brandField = document.getElementById('brand-field-wrapper');
+      
+      const tabSignIn = document.getElementById('tab-signin-btn');
+      const tabRegister = document.getElementById('tab-register-btn');
+      const tabIndicator = document.getElementById('tab-indicator');
+      const nameField = document.getElementById('name-field-wrapper');
+      
+      const submitBtnText = document.getElementById('submit-btn-text');
+      const footerPromptText = document.getElementById('footer-prompt-text');
+      const footerToggleBtn = document.getElementById('footer-toggle-btn');
+      const forgotPasswordLink = document.getElementById('forgot-password-link');
+      
+      const passwordInput = document.getElementById('password');
+      const togglePasswordBtn = document.getElementById('toggle-password-btn');
+      const passwordEyeIcon = document.getElementById('password-eye-icon');
+
+      let currentRole = 'explorer'; // 'explorer' or 'brand'
+      let currentMode = 'signin';   // 'signin' or 'register'
+
+      // Role Selection Handler
+      function setRole(role) {
+        currentRole = role;
+        if (role === 'explorer') {
+          // Explorer styling
+          explorerBtn.className = "flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-full bg-primary-container text-white shadow-sm transition-all duration-200";
+          brandBtn.className = "flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-full text-on-surface-variant/80 hover:text-primary transition-all duration-200";
+          roleHint.textContent = "Explorer ID";
+          if (currentMode === 'register') {
+            brandField.classList.add('hidden');
+          }
+        } else {
+          // Brand styling
+          brandBtn.className = "flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-full bg-primary-container text-white shadow-sm transition-all duration-200";
+          explorerBtn.className = "flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-full text-on-surface-variant/80 hover:text-primary transition-all duration-200";
+          roleHint.textContent = "Brand Business Email";
+          if (currentMode === 'register') {
+            brandField.classList.remove('hidden');
+          }
+        }
+      }
+
+      explorerBtn.addEventListener('click', () => setRole('explorer'));
+      brandBtn.addEventListener('click', () => setRole('brand'));
+
+      // Auth Mode Toggle (Sign In vs Register)
+      function setMode(mode) {
+        currentMode = mode;
+        if (mode === 'signin') {
+          tabSignIn.classList.add('text-primary', 'font-bold');
+          tabSignIn.classList.remove('text-text-muted', 'font-semibold');
+          tabRegister.classList.add('text-text-muted', 'font-semibold');
+          tabRegister.classList.remove('text-primary', 'font-bold');
+          
+          tabIndicator.style.left = '0';
+          tabIndicator.style.right = '0';
+
+          nameField.classList.add('hidden');
+          brandField.classList.add('hidden');
+          forgotPasswordLink.classList.remove('hidden');
+
+          submitBtnText.textContent = "Sign In";
+          footerPromptText.textContent = "Don't have an account?";
+          footerToggleBtn.textContent = "Sign Up";
+        } else {
+          tabRegister.classList.add('text-primary', 'font-bold');
+          tabRegister.classList.remove('text-text-muted', 'font-semibold');
+          tabSignIn.classList.add('text-text-muted', 'font-semibold');
+          tabSignIn.classList.remove('text-primary', 'font-bold');
+
+          tabIndicator.style.left = '100%';
+          tabIndicator.style.right = '-100%';
+
+          nameField.classList.remove('hidden');
+          if (currentRole === 'brand') {
+            brandField.classList.remove('hidden');
+          } else {
+            brandField.classList.add('hidden');
+          }
+          forgotPasswordLink.classList.add('hidden');
+
+          submitBtnText.textContent = "Create Spatial Account";
+          footerPromptText.textContent = "Already have an account?";
+          footerToggleBtn.textContent = "Sign In";
+        }
+      }
+
+      tabSignIn.addEventListener('click', () => setMode('signin'));
+      tabRegister.addEventListener('click', () => setMode('register'));
+      footerToggleBtn.addEventListener('click', () => {
+        setMode(currentMode === 'signin' ? 'register' : 'signin');
+      });
+
+      // Toggle Password Visibility
+      togglePasswordBtn.addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        passwordEyeIcon.textContent = isPassword ? 'visibility_off' : 'visibility';
+      });
+    });
+  </script>
+</body></html>

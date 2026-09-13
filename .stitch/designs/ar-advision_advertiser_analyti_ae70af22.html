@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AR-AdVision - Advertiser Analytics &amp; Campaign Dashboard</title>
+<!-- Google Fonts: Plus Jakarta Sans & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed-dim": "#adc7ff",
+            "secondary-fixed": "#bdeece",
+            "surface-container-low": "#f2f3ff",
+            "surface-bright": "#faf8ff",
+            "tertiary-fixed": "#ffdbc7",
+            "on-primary-fixed": "#001a41",
+            "on-secondary": "#ffffff",
+            "secondary-container": "#bdeece",
+            "inverse-surface": "#2a3040",
+            "secondary-fixed-dim": "#a2d1b3",
+            "on-error-container": "#93000a",
+            "on-tertiary": "#ffffff",
+            "on-primary": "#ffffff",
+            "on-background": "#151b2a",
+            "on-surface-variant": "#434750",
+            "surface-tint": "#395d9f",
+            "outline-variant": "#c3c6d2",
+            "on-secondary-container": "#416d54",
+            "on-primary-fixed-variant": "#1c4585",
+            "on-secondary-fixed": "#002111",
+            "text-muted": "#6B7280",
+            "tertiary": "#7a5740",
+            "surface-container": "#e9edff",
+            "background": "#faf8ff",
+            "inverse-on-surface": "#edf0ff",
+            "surface-container-high": "#e2e8fc",
+            "error-container": "#ffdad6",
+            "primary-container": "#7c9fe5",
+            "on-tertiary-fixed-variant": "#603f2b",
+            "ar-reticle-glow": "rgba(124, 159, 229, 0.35)",
+            "on-secondary-fixed-variant": "#234f38",
+            "inverse-primary": "#adc7ff",
+            "surface-variant": "#dde2f7",
+            "surface": "#faf8ff",
+            "hud-glass-surface": "rgba(250, 251, 254, 0.75)",
+            "surface-dim": "#d4d9ee",
+            "on-tertiary-container": "#4d2f1c",
+            "tertiary-container": "#c1967c",
+            "surface-container-lowest": "#ffffff",
+            "surface-canvas": "#FAFBFE",
+            "on-primary-container": "#003474",
+            "error": "#ba1a1a",
+            "primary-fixed": "#d8e2ff",
+            "on-surface": "#151b2a",
+            "on-error": "#ffffff",
+            "on-tertiary-fixed": "#2e1505",
+            "primary": "#395d9f",
+            "surface-container-highest": "#dde2f7",
+            "tertiary-fixed-dim": "#ebbda1",
+            "secondary": "#3b674e",
+            "outline": "#747781"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "gutter": "1rem",
+            "space-xl": "2rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1rem",
+            "margin": "1.5rem",
+            "gutter-mobile": "0.75rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem"
+          },
+          "fontFamily": {
+            "label-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "body-lg": ["Inter"]
+          },
+          "fontSize": {
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "headline-xl-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .custom-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-canvas text-on-surface antialiased min-h-screen flex justify-center selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Mobile Viewport Container -->
+<div class="w-full max-w-md bg-surface-canvas min-h-screen flex flex-col relative pb-28 shadow-xl">
+<!-- Top System Status Bar -->
+<div class="w-full px-margin-mobile pt-3 pb-1 flex justify-between items-center text-on-surface select-none z-30">
+<span class="font-label-md text-label-md font-bold tracking-tight">9:41</span>
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-[15px]" data-icon="signal_cellular_alt">signal_cellular_alt</span>
+<span class="material-symbols-outlined text-[15px]" data-icon="wifi">wifi</span>
+<span class="material-symbols-outlined text-[17px]" data-icon="battery_full">battery_full</span>
+</div>
+</div>
+<!-- Top Navigation / Brand Anchor Header -->
+<header class="w-full px-margin-mobile py-space-sm flex justify-between items-center z-20">
+<!-- Left: Organization Switcher -->
+<button class="flex items-center gap-2 bg-surface-container-lowest/80 border border-outline-variant/30 rounded-full pl-1.5 pr-3 py-1 shadow-sm backdrop-blur-md active:scale-95 transition-transform duration-150">
+<div class="w-7 h-7 rounded-full bg-primary-container/20 flex items-center justify-center text-primary font-headline-sm font-bold text-xs">
+          A
+        </div>
+<span class="font-headline-sm text-label-lg font-bold text-primary tracking-tight flex items-center gap-1">
+          Aura Tech Inc.
+          <span class="material-symbols-outlined text-[16px] text-primary" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
+</span>
+</button>
+<!-- Right: Mode Pill & Notification Icon with Badge -->
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5 bg-secondary-container/40 border border-secondary/20 rounded-full px-2.5 py-1">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-secondary-container font-semibold tracking-normal">Advertiser</span>
+</div>
+<button class="relative w-9 h-9 rounded-full bg-surface-container-lowest/90 border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-surface-container active:scale-95 transition-transform shadow-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+<span class="absolute 0 top-1 right-1 w-4 h-4 bg-error text-on-error rounded-full flex items-center justify-center font-label-sm text-[9px] font-bold border-2 border-surface-canvas">3</span>
+</button>
+</div>
+</header>
+<!-- Main Content Stream -->
+<main class="flex-1 px-margin-mobile pt-2 space-y-5">
+<!-- Greeting & Section Welcome Header -->
+<div class="flex justify-between items-end pt-1">
+<div>
+<span class="font-label-md text-label-md text-text-muted">Aug 2025 Live Metrics</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface tracking-tight">Campaign Portal</h1>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-high/60 rounded-full px-2.5 py-1 border border-outline-variant/20">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="sync">sync</span>
+<span class="font-label-sm text-label-sm text-primary">Live HUD</span>
+</div>
+</div>
+<!-- Quick Actions (Horizontal Pastel Action Hub) -->
+<section class="flex gap-2.5 overflow-x-auto pb-1 custom-scrollbar -mx-margin-mobile px-margin-mobile">
+<!-- Action 1: New Campaign -->
+<button class="flex-shrink-0 flex items-center gap-3 bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3 shadow-sm hover:border-primary-container/60 active:scale-95 transition-all text-left min-w-[150px]">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]" data-icon="add_circle">add_circle</span>
+</div>
+<div>
+<p class="font-headline-sm text-label-md font-bold text-on-surface leading-tight">+ New</p>
+<p class="font-label-sm text-label-sm text-text-muted">Campaign</p>
+</div>
+</button>
+<!-- Action 2: 3D Products -->
+<button class="flex-shrink-0 flex items-center gap-3 bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3 shadow-sm hover:border-secondary/40 active:scale-95 transition-all text-left min-w-[150px]">
+<div class="w-10 h-10 rounded-xl bg-secondary-container/40 flex items-center justify-center text-secondary flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]" data-icon="view_in_ar">view_in_ar</span>
+</div>
+<div>
+<div class="flex items-center gap-1">
+<span class="font-headline-sm text-label-md font-bold text-on-surface leading-tight">3D Assets</span>
+</div>
+<span class="inline-block font-label-sm text-[9px] bg-secondary-container/60 text-on-secondary-container px-1.5 py-0.5 rounded-full font-bold">4 Active</span>
+</div>
+</button>
+<!-- Action 3: QR Studio -->
+<button class="flex-shrink-0 flex items-center gap-3 bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3 shadow-sm hover:border-tertiary-fixed/60 active:scale-95 transition-all text-left min-w-[150px]">
+<div class="w-10 h-10 rounded-xl bg-tertiary-fixed/40 flex items-center justify-center text-tertiary flex-shrink-0">
+<span class="material-symbols-outlined text-[22px]" data-icon="qr_code_2">qr_code_2</span>
+</div>
+<div>
+<p class="font-headline-sm text-label-md font-bold text-on-surface leading-tight">QR Studio</p>
+<p class="font-label-sm text-label-sm text-text-muted">12 Generated</p>
+</div>
+</button>
+</section>
+<!-- Key Metrics KPI Cards Grid (2x2) -->
+<section class="grid grid-cols-2 gap-3">
+<!-- KPI 1: AR Scans (Pastel Blue Tint) -->
+<div class="bg-[#EBF3FE] border border-primary-fixed/40 rounded-2xl p-3.5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between mb-2">
+<span class="font-label-md text-label-md font-semibold text-primary/80">Total AR Scans</span>
+<div class="w-7 h-7 rounded-full bg-surface-container-lowest/80 flex items-center justify-center text-primary shadow-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="qr_code_scanner">qr_code_scanner</span>
+</div>
+</div>
+<div>
+<div class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">42,850</div>
+<div class="mt-2 flex items-center gap-1">
+<span class="inline-flex items-center gap-0.5 font-label-sm text-label-sm text-primary bg-primary/10 px-2 py-0.5 rounded-full font-bold">
+<span class="material-symbols-outlined text-[12px]" data-icon="trending_up">trending_up</span>
+                +18.4%
+              </span>
+<span class="font-body-sm text-[10px] text-text-muted truncate">this week</span>
+</div>
+</div>
+</div>
+<!-- KPI 2: Dwell Time (Pastel Mint Tint) -->
+<div class="bg-[#EDF9F4] border border-secondary-container/60 rounded-2xl p-3.5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between mb-2">
+<span class="font-label-md text-label-md font-semibold text-secondary/80">Avg. Dwell Time</span>
+<div class="w-7 h-7 rounded-full bg-surface-container-lowest/80 flex items-center justify-center text-secondary shadow-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="timer">timer</span>
+</div>
+</div>
+<div>
+<div class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">1m 42s</div>
+<div class="mt-2 flex items-center gap-1">
+<span class="inline-flex items-center gap-0.5 font-label-sm text-label-sm text-secondary bg-secondary-container/80 px-2 py-0.5 rounded-full font-bold">
+<span class="material-symbols-outlined text-[12px]" data-icon="schedule">schedule</span>
+                +12s
+              </span>
+<span class="font-body-sm text-[10px] text-text-muted truncate">vs avg</span>
+</div>
+</div>
+</div>
+<!-- KPI 3: Interaction Rate (Pastel Peach Tint) -->
+<div class="bg-[#FFF1EC] border border-tertiary-fixed/50 rounded-2xl p-3.5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between mb-2">
+<span class="font-label-md text-label-md font-semibold text-tertiary/80">Interaction Rate</span>
+<div class="w-7 h-7 rounded-full bg-surface-container-lowest/80 flex items-center justify-center text-tertiary shadow-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="touch_app">touch_app</span>
+</div>
+</div>
+<div>
+<div class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">64.2%</div>
+<div class="mt-2 flex items-center gap-1">
+<span class="inline-flex items-center gap-0.5 font-label-sm text-label-sm text-tertiary bg-tertiary-fixed/70 px-2 py-0.5 rounded-full font-bold">
+<span class="material-symbols-outlined text-[12px]" data-icon="ads_click">ads_click</span>
+                +5.1%
+              </span>
+<span class="font-body-sm text-[10px] text-text-muted truncate">lift</span>
+</div>
+</div>
+</div>
+<!-- KPI 4: Direct Conversions (Pastel Butter Yellow Tint) -->
+<div class="bg-[#FEF9EB] border border-yellow-200 rounded-2xl p-3.5 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between mb-2">
+<span class="font-label-md text-label-md font-semibold text-yellow-800">Conversions</span>
+<div class="w-7 h-7 rounded-full bg-surface-container-lowest/80 flex items-center justify-center text-yellow-700 shadow-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="shopping_bag">shopping_bag</span>
+</div>
+</div>
+<div>
+<div class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">8.9%</div>
+<div class="mt-2 flex items-center gap-1">
+<span class="inline-flex items-center gap-0.5 font-label-sm text-label-sm text-yellow-800 bg-yellow-100 px-2 py-0.5 rounded-full font-bold">
+<span class="material-symbols-outlined text-[12px]" data-icon="north_east">north_east</span>
+                +1.2%
+              </span>
+<span class="font-body-sm text-[10px] text-text-muted truncate">CTR</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Engagement Trend Performance Chart Section -->
+<section class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-4 shadow-sm">
+<!-- Header & Range Filter -->
+<div class="flex items-center justify-between mb-3">
+<div>
+<h2 class="font-headline-sm text-label-lg font-bold text-on-surface">Engagement Performance</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Dual telemetry stream</p>
+</div>
+<!-- Filter Buttons -->
+<div class="flex bg-surface-container-high/50 p-0.5 rounded-full border border-outline-variant/20">
+<button class="px-2.5 py-1 rounded-full font-label-sm text-label-sm font-bold bg-primary text-on-primary shadow-xs">30D</button>
+<button class="px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold text-text-muted hover:text-on-surface">7D</button>
+<button class="px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold text-text-muted hover:text-on-surface">24H</button>
+</div>
+</div>
+<!-- Chart Legend Indicator -->
+<div class="flex items-center gap-4 text-label-sm font-label-sm mb-2">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-1 bg-[#7C9FE5] rounded-full"></span>
+<span class="text-text-muted">AR Scans</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-0.5 border-b-2 border-dashed border-[#52C49C]"></span>
+<span class="text-text-muted">3D Hotspots</span>
+</div>
+</div>
+<!-- SVG Dual Curve Chart Graphic -->
+<div class="relative w-full h-44 mt-2">
+<svg class="w-full h-full overflow-visible" fill="none" viewbox="0 0 340 160" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<!-- Gradient for AR Scans Curve -->
+<lineargradient gradientunits="userSpaceOnUse" id="scansGradient" x1="0" x2="0" y1="0" y2="160">
+<stop offset="0%" stop-color="#7C9FE5" stop-opacity="0.32"></stop>
+<stop offset="100%" stop-color="#7C9FE5" stop-opacity="0.00"></stop>
+</lineargradient>
+</defs>
+<!-- Subtle Gridlines -->
+<line stroke="#F0F3FA" stroke-width="1" x1="0" x2="340" y1="30" y2="30"></line>
+<line stroke="#F0F3FA" stroke-width="1" x1="0" x2="340" y1="75" y2="75"></line>
+<line stroke="#F0F3FA" stroke-width="1" x1="0" x2="340" y1="120" y2="120"></line>
+<!-- Primary Filled Gradient Curve (AR Scans) -->
+<path d="M 0 130 C 40 120, 70 85, 110 95 C 150 105, 175 40, 220 35 C 265 30, 295 70, 340 50 L 340 160 L 0 160 Z" fill="url(#scansGradient)"></path>
+<!-- Primary Curve Stroke -->
+<path d="M 0 130 C 40 120, 70 85, 110 95 C 150 105, 175 40, 220 35 C 265 30, 295 70, 340 50" stroke="#7C9FE5" stroke-linecap="round" stroke-width="3"></path>
+<!-- Secondary Dashed Curve (3D Hotspots) -->
+<path d="M 0 145 C 45 138, 75 110, 115 118 C 155 125, 180 80, 220 75 C 265 70, 290 100, 340 85" stroke="#52C49C" stroke-dasharray="4 4" stroke-linecap="round" stroke-width="2.2"></path>
+<!-- Highlight Peak Marker Line & Halo Dot on Peak (x=220, y=35) -->
+<line stroke="#7C9FE5" stroke-dasharray="2 2" stroke-width="1.5" x1="220" x2="220" y1="35" y2="145"></line>
+<!-- Outer Ripple Glow -->
+<circle cx="220" cy="35" fill="#7C9FE5" fill-opacity="0.25" r="7"></circle>
+<!-- Solid Inner Pip -->
+<circle cx="220" cy="35" fill="#395d9f" r="4" stroke="#ffffff" stroke-width="2"></circle>
+</svg>
+<!-- Interactive Floating Tooltip Card over Peak -->
+<div class="absolute left-1/2 -translate-x-12 top-2 bg-inverse-surface text-inverse-on-surface px-2.5 py-1.5 rounded-xl shadow-md flex items-center gap-1.5 border border-outline-variant/30 backdrop-blur-md pointer-events-none">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<div>
+<p class="font-label-sm text-[9px] text-outline-variant leading-none">Aug 24 • Peak</p>
+<p class="font-label-md text-label-sm font-bold leading-tight">2,410 scans</p>
+</div>
+</div>
+</div>
+<!-- Date Axis Labels -->
+<div class="flex justify-between items-center text-label-sm font-label-sm text-text-muted mt-1 px-1">
+<span>Aug 01</span>
+<span>Aug 08</span>
+<span>Aug 16</span>
+<span class="text-primary font-bold">Aug 24</span>
+<span>Aug 31</span>
+</div>
+</section>
+<!-- Active Campaigns Section -->
+<section class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Active Campaigns</h2>
+<span class="font-label-sm text-label-sm bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold">3 Live</span>
+</div>
+<button class="font-label-md text-label-md text-primary font-bold hover:underline">See All (5)</button>
+</div>
+<!-- Campaign Item 1: Nova X Summer Launch -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<!-- Stylized QR Code Thumbnail -->
+<div class="w-12 h-12 rounded-xl bg-surface-container-low border border-outline-variant/30 p-1.5 flex flex-col justify-between flex-shrink-0 shadow-xs">
+<div class="flex justify-between">
+<div class="w-3 h-3 bg-on-surface rounded-xs border-2 border-surface-container-low"></div>
+<div class="w-3 h-3 bg-on-surface rounded-xs border-2 border-surface-container-low"></div>
+</div>
+<div class="flex justify-between items-center px-1">
+<div class="w-1 h-1 bg-primary rounded-full"></div>
+<div class="w-1 h-1 bg-on-surface"></div>
+</div>
+<div class="flex justify-between">
+<div class="w-3 h-3 bg-on-surface rounded-xs border-2 border-surface-container-low"></div>
+<div class="w-2 h-2 bg-secondary rounded-xs"></div>
+</div>
+</div>
+<div>
+<h3 class="font-headline-sm text-label-lg font-bold text-on-surface leading-tight">Nova X Summer Launch</h3>
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5">18.2k scans • 4 days left</p>
+</div>
+</div>
+<!-- Status Chip -->
+<span class="flex items-center gap-1 bg-secondary-container/50 text-on-secondary-container font-label-sm text-label-sm px-2.5 py-1 rounded-full font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+              Active
+            </span>
+</div>
+<!-- Progress Bar & Target Goal -->
+<div class="mt-3.5 pt-2 border-t border-outline-variant/15">
+<div class="flex justify-between items-center text-label-sm font-label-sm mb-1.5">
+<span class="text-text-muted">Campaign Goal (25k)</span>
+<span class="font-bold text-primary">72% reached</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full transition-all duration-500" style="width: 72%;"></div>
+</div>
+</div>
+<!-- Action Footnote Link -->
+<div class="mt-3 flex justify-end">
+<button class="font-label-md text-label-md text-primary font-bold flex items-center gap-1 hover:gap-1.5 transition-all">
+              View Analytics
+              <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Campaign Item 2: AeroGlide Sneaker Drop -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<!-- Stylized QR Code Thumbnail -->
+<div class="w-12 h-12 rounded-xl bg-surface-container-low border border-outline-variant/30 p-1.5 flex flex-col justify-between flex-shrink-0 shadow-xs">
+<div class="flex justify-between">
+<div class="w-3 h-3 bg-secondary rounded-xs"></div>
+<div class="w-3 h-3 bg-on-surface rounded-xs"></div>
+</div>
+<div class="flex justify-around">
+<div class="w-1.5 h-1.5 bg-on-surface rounded-xs"></div>
+<div class="w-1.5 h-1.5 bg-primary-container rounded-xs"></div>
+</div>
+<div class="flex justify-between">
+<div class="w-3 h-3 bg-on-surface rounded-xs"></div>
+<div class="w-1.5 h-1.5 bg-secondary rounded-xs"></div>
+</div>
+</div>
+<div>
+<h3 class="font-headline-sm text-label-lg font-bold text-on-surface leading-tight">AeroGlide Sneaker Drop</h3>
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5">14.1k scans • 12 days left</p>
+</div>
+</div>
+<!-- Status Chip -->
+<span class="flex items-center gap-1 bg-secondary-container/50 text-on-secondary-container font-label-sm text-label-sm px-2.5 py-1 rounded-full font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              Active
+            </span>
+</div>
+<!-- Progress Bar & Target Goal -->
+<div class="mt-3.5 pt-2 border-t border-outline-variant/15">
+<div class="flex justify-between items-center text-label-sm font-label-sm mb-1.5">
+<span class="text-text-muted">Campaign Goal (25k)</span>
+<span class="font-bold text-secondary">55% reached</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full transition-all duration-500" style="width: 55%;"></div>
+</div>
+</div>
+<!-- Action Link -->
+<div class="mt-3 flex justify-end">
+<button class="font-label-md text-label-md text-primary font-bold flex items-center gap-1 hover:gap-1.5 transition-all">
+              View Analytics
+              <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Campaign Item 3: Berry Fizz Taste Test (Scheduled) -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<!-- Stylized QR Code Thumbnail -->
+<div class="w-12 h-12 rounded-xl bg-surface-container-low border border-outline-variant/30 p-1.5 flex flex-col justify-between flex-shrink-0 shadow-xs">
+<div class="flex justify-between">
+<div class="w-3 h-3 bg-tertiary-container rounded-xs"></div>
+<div class="w-3 h-3 bg-on-surface rounded-xs"></div>
+</div>
+<div class="flex justify-center">
+<div class="w-2 h-1 bg-outline-variant"></div>
+</div>
+<div class="flex justify-between">
+<div class="w-3 h-3 bg-on-surface rounded-xs"></div>
+<div class="w-3 h-3 bg-primary/40 rounded-xs"></div>
+</div>
+</div>
+<div>
+<h3 class="font-headline-sm text-label-lg font-bold text-on-surface leading-tight">Berry Fizz Taste Test</h3>
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5">Starts Oct 1 • Target: 10k scans</p>
+</div>
+</div>
+<!-- Status Chip -->
+<span class="flex items-center gap-1 bg-surface-container-high text-primary font-label-sm text-label-sm px-2.5 py-1 rounded-full font-bold">
+<span class="material-symbols-outlined text-[12px]" data-icon="schedule">schedule</span>
+              Scheduled
+            </span>
+</div>
+<!-- Action Link -->
+<div class="mt-3.5 pt-2 border-t border-outline-variant/15 flex justify-end">
+<button class="font-label-md text-label-md text-text-muted hover:text-on-surface font-semibold flex items-center gap-1">
+              Edit Schedule
+              <span class="material-symbols-outlined text-[16px]" data-icon="edit_calendar">edit_calendar</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Bottom Spacer to clear fixed HUD navigation -->
+<div class="h-6"></div>
+</main>
+<!-- Shared Component: Bottom Navigation Bar -->
+<!-- Applying Shared Component JSON rules and Style Guidance -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter-mobile py-2.5 max-w-md mx-auto bg-hud-glass-surface/90 backdrop-blur-xl dark:bg-inverse-surface/90 shadow-[0_-4px_24px_-4px_rgba(124,159,229,0.18)] dark:shadow-none">
+<!-- Tab 1: Discover -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-outline-variant px-3 py-1.5 font-label-sm hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-95 duration-150" href="#discover">
+<span class="material-symbols-outlined text-[22px]" data-icon="explore">explore</span>
+<span class="font-label-sm text-label-sm mt-0.5">Discover</span>
+</a>
+<!-- Tab 2: Saved -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-outline-variant px-3 py-1.5 font-label-sm hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-95 duration-150" href="#saved">
+<span class="material-symbols-outlined text-[22px]" data-icon="bookmark">bookmark</span>
+<span class="font-label-sm text-label-sm mt-0.5">Saved</span>
+</a>
+<!-- Tab 3: Campaigns (ACTIVE - mapped directly to current page context) -->
+<a class="flex flex-col items-center justify-center bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-fixed-dim rounded-full px-3 py-1.5 font-label-sm active:scale-95 duration-150 transition-transform" href="#campaigns">
+<span class="material-symbols-outlined text-[22px]" data-icon="view_in_ar" data-weight="fill" style="font-variation-settings: 'FILL' 1;">view_in_ar</span>
+<span class="font-label-sm text-label-sm mt-0.5 font-bold">Campaigns</span>
+</a>
+<!-- Tab 4: Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-outline-variant px-3 py-1.5 font-label-sm hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-95 duration-150" href="#profile">
+<span class="material-symbols-outlined text-[22px]" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm mt-0.5">Profile</span>
+</a>
+</nav>
+</div>
+</body></html>

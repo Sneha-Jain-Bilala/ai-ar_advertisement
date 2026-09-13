@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AR-AdVision - Scan AR Ad</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with custom config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "ar-reticle-glow": "rgba(124, 159, 229, 0.35)",
+            "primary-fixed-dim": "#adc7ff",
+            "on-tertiary-container": "#4d2f1c",
+            "surface-container-low": "#f2f3ff",
+            "tertiary-fixed-dim": "#ebbda1",
+            "tertiary-fixed": "#ffdbc7",
+            "on-surface": "#151b2a",
+            "on-secondary-fixed-variant": "#234f38",
+            "surface-dim": "#d4d9ee",
+            "on-tertiary-fixed-variant": "#603f2b",
+            "surface-canvas": "#FAFBFE",
+            "on-secondary": "#ffffff",
+            "surface-container-high": "#e2e8fc",
+            "tertiary-container": "#c1967c",
+            "error-container": "#ffdad6",
+            "primary": "#395d9f",
+            "on-background": "#151b2a",
+            "tertiary": "#7a5740",
+            "surface-variant": "#dde2f7",
+            "surface-container": "#e9edff",
+            "on-primary-fixed": "#001a41",
+            "inverse-on-surface": "#edf0ff",
+            "surface": "#faf8ff",
+            "surface-container-highest": "#dde2f7",
+            "on-tertiary": "#ffffff",
+            "primary-fixed": "#d8e2ff",
+            "surface-tint": "#395d9f",
+            "hud-glass-surface": "rgba(250, 251, 254, 0.75)",
+            "on-error-container": "#93000a",
+            "on-secondary-fixed": "#002111",
+            "on-surface-variant": "#434750",
+            "primary-container": "#7c9fe5",
+            "inverse-primary": "#adc7ff",
+            "inverse-surface": "#2a3040",
+            "on-secondary-container": "#416d54",
+            "on-error": "#ffffff",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#003474",
+            "error": "#ba1a1a",
+            "surface-bright": "#faf8ff",
+            "secondary": "#3b674e",
+            "secondary-fixed-dim": "#a2d1b3",
+            "surface-container-lowest": "#ffffff",
+            "text-muted": "#6B7280",
+            "on-primary-fixed-variant": "#1c4585",
+            "background": "#faf8ff",
+            "secondary-fixed": "#bdeece",
+            "outline": "#747781",
+            "on-tertiary-fixed": "#2e1505",
+            "secondary-container": "#bdeece",
+            "outline-variant": "#c3c6d2"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "1.5rem",
+            "space-xs": "0.25rem",
+            "gutter": "1rem",
+            "space-lg": "1.5rem",
+            "gutter-mobile": "0.75rem",
+            "space-xl": "2rem",
+            "space-md": "1rem",
+            "margin-mobile": "1rem",
+            "space-sm": "0.5rem"
+          },
+          "fontFamily": {
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Inter"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Inter"]
+          },
+          "fontSize": {
+            "headline-xl-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    
+    @keyframes scanLaser {
+      0%, 100% {
+        transform: translateY(0);
+        opacity: 0.3;
+      }
+      50% {
+        transform: translateY(240px);
+        opacity: 0.95;
+      }
+    }
+
+    .animate-laser {
+      animation: scanLaser 3s ease-in-out infinite;
+    }
+
+    @keyframes pulseAura {
+      0%, 100% {
+        box-shadow: 0 0 16px rgba(124, 159, 229, 0.4), inset 0 0 12px rgba(124, 159, 229, 0.15);
+      }
+      50% {
+        box-shadow: 0 0 28px rgba(124, 159, 229, 0.7), inset 0 0 20px rgba(168, 216, 185, 0.3);
+      }
+    }
+
+    .pulse-glow {
+      animation: pulseAura 2.5s ease-in-out infinite;
+    }
+
+    /* Custom Hide Scrollbar for Horizontal Card Row */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-inverse-surface text-surface-container-lowest font-body-md antialiased select-none flex justify-center items-center min-h-screen">
+<!-- Mobile Viewport Container -->
+<div class="relative w-full max-w-[390px] h-[844px] overflow-hidden bg-black flex flex-col shadow-2xl rounded-[44px] border-[6px] border-slate-900">
+<!-- Camera Feed Background Layer -->
+<div class="absolute inset-0 z-0">
+<img alt="Camera viewfinder passthrough showing a bright living room interior" class="w-full h-full object-cover filter brightness-[0.82] contrast-[1.05]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDK77AaQOOLG9oZVg5FqtWvm5hF4RwfvG_8DZ5a5ZfT30BWTNltrS8-JreI0FpOn9M18cBPXzYqwgd7d25O8qA9Y9YYrmqI2EKXAYcmTKHVlfUEpAe7kY2PtvZMQYeEi8cx9ZlQq-Roo8her-sAnMVDhFhe_1kzk86NIjH3vZBpEocPams9Z_sCcEsjeJr2hAyJRN_nHvKjynzZ6VQwOhumHwVS-a6DdxH1GgvQUdg9ABt2H-t3E202VDaswzLF34DuYjIYo7UPfu0"/>
+<!-- Vignette and Dark AR Overlay -->
+<div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/80 pointer-events-none"></div>
+<div class="absolute inset-0 bg-radial-gradient from-transparent via-black/10 to-black/50 pointer-events-none"></div>
+</div>
+<!-- Top Status Bar & Navigation Area -->
+<div class="relative z-30 pt-4 px-margin-mobile flex flex-col gap-2">
+<!-- iOS Style Top Micro Bar -->
+<div class="flex justify-between items-center text-white/90 text-label-sm font-label-sm px-1.5 pb-1">
+<span class="tracking-tight font-semibold">9:41</span>
+<div class="flex items-center gap-1.5 opacity-90">
+<span class="material-symbols-outlined text-[14px]">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-[14px]">wifi</span>
+<span class="material-symbols-outlined text-[16px]">battery_full</span>
+</div>
+</div>
+<!-- Floating Glass Top Header -->
+<header class="flex items-center justify-between py-space-xs px-1">
+<!-- Close / Back Action Button -->
+<button aria-label="Close Scanner" class="w-10 h-10 rounded-full bg-black/40 backdrop-blur-xl text-white flex items-center justify-center border border-white/15 active:scale-95 transition-transform duration-150 hover:bg-black/50">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+<!-- Screen Title Context -->
+<div class="text-center flex flex-col items-center">
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-fixed animate-ping"></span>
+<h1 class="font-headline-sm text-headline-sm font-bold text-white tracking-tight">Scan AR Ad</h1>
+</div>
+<span class="font-label-sm text-label-sm text-primary-fixed-dim opacity-90 tracking-wide uppercase">AR-AdVision Optical Engine</span>
+</div>
+<!-- Quick Controls Cluster (Flash & Info) -->
+<div class="flex items-center gap-2">
+<button aria-label="Toggle Flashlight" class="w-10 h-10 rounded-full bg-black/40 backdrop-blur-xl text-white flex items-center justify-center border border-white/15 active:scale-95 transition-transform duration-150 hover:bg-black/50" id="flashToggle">
+<span class="material-symbols-outlined text-[20px] text-amber-300">flash_on</span>
+</button>
+<button aria-label="Scan Help &amp; Instructions" class="w-10 h-10 rounded-full bg-black/40 backdrop-blur-xl text-white flex items-center justify-center border border-white/15 active:scale-95 transition-transform duration-150 hover:bg-black/50">
+<span class="material-symbols-outlined text-[20px]">info</span>
+</button>
+</div>
+</header>
+<!-- Floating Instructional Glass Banner -->
+<div class="mt-1 bg-black/45 backdrop-blur-xl border border-white/15 text-white rounded-2xl p-3 shadow-lg flex items-start gap-3 transition-all duration-300">
+<div class="bg-primary-container/25 border border-primary-container/40 text-primary-fixed-dim p-2 rounded-xl flex-shrink-0 flex items-center justify-center mt-0.5">
+<span class="material-symbols-outlined text-[20px]" data-weight="fill">view_in_ar</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-label-md text-label-md text-white font-semibold flex items-center gap-1">
+            Point at AR QR Code
+            <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-secondary/60 text-secondary-fixed uppercase tracking-wider">Active</span>
+</p>
+<p class="font-body-sm text-body-sm text-white/70 leading-tight mt-0.5 line-clamp-2">
+            Align camera with any AR-AdVision poster, billboard, packaging, or magazine tag to trigger 3D experience.
+          </p>
+</div>
+</div>
+</div>
+<!-- Center Reticle Scanning Area (Optical Viewport) -->
+<div class="relative flex-1 z-20 flex flex-col items-center justify-center px-4 -mt-4">
+<!-- AR Viewport Reticle Box (264px x 264px) -->
+<div class="relative w-[264px] h-[264px] rounded-3xl pulse-glow bg-primary-container/5 backdrop-blur-[1px] border border-white/10 flex items-center justify-center overflow-hidden">
+<!-- Corner Bracket 1: Top-Left -->
+<div class="absolute top-0 left-0 w-8 h-8 border-t-[3.5px] border-l-[3.5px] border-primary-container rounded-tl-2xl shadow-[0_0_10px_#7C9FE5]"></div>
+<!-- Corner Bracket 2: Top-Right -->
+<div class="absolute top-0 right-0 w-8 h-8 border-t-[3.5px] border-r-[3.5px] border-primary-container rounded-tr-2xl shadow-[0_0_10px_#7C9FE5]"></div>
+<!-- Corner Bracket 3: Bottom-Left -->
+<div class="absolute bottom-0 left-0 w-8 h-8 border-b-[3.5px] border-l-[3.5px] border-primary-container rounded-bl-2xl shadow-[0_0_10px_#7C9FE5]"></div>
+<!-- Corner Bracket 4: Bottom-Right -->
+<div class="absolute bottom-0 right-0 w-8 h-8 border-b-[3.5px] border-r-[3.5px] border-primary-container rounded-br-2xl shadow-[0_0_10px_#7C9FE5]"></div>
+<!-- Corner Status Dots (Mint / Blue) -->
+<div class="absolute top-2.5 left-2.5 w-1.5 h-1.5 rounded-full bg-secondary-fixed shadow-[0_0_6px_#a2d1b3]"></div>
+<div class="absolute top-2.5 right-2.5 w-1.5 h-1.5 rounded-full bg-primary-container shadow-[0_0_6px_#7C9FE5]"></div>
+<div class="absolute bottom-2.5 left-2.5 w-1.5 h-1.5 rounded-full bg-primary-container shadow-[0_0_6px_#7C9FE5]"></div>
+<div class="absolute bottom-2.5 right-2.5 w-1.5 h-1.5 rounded-full bg-secondary-fixed shadow-[0_0_6px_#a2d1b3]"></div>
+<!-- Center Crosshairs / Spatial Alignment Mark -->
+<div class="relative flex items-center justify-center pointer-events-none opacity-40">
+<div class="w-7 h-[1.5px] bg-primary-fixed-dim"></div>
+<div class="h-7 w-[1.5px] bg-primary-fixed-dim absolute"></div>
+<div class="w-2.5 h-2.5 rounded-full border border-primary-container absolute"></div>
+</div>
+<!-- Laser Scanning Line Beam -->
+<div class="absolute top-2 left-3 right-3 h-[2px] bg-gradient-to-r from-transparent via-primary-container to-transparent shadow-[0_0_14px_#7C9FE5,0_0_4px_#ffffff] animate-laser pointer-events-none"></div>
+<!-- Subtle Diagonal Target Grid Lines -->
+<div class="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#7c9fe5_1px,transparent_1px)] [background-size:16px_16px]"></div>
+</div>
+<!-- Reticle Floating Tracker Pill -->
+<div class="mt-4 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/15 shadow-md">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary-fixed-dim"></span>
+</span>
+<span class="font-label-md text-label-md text-white/90 font-medium tracking-wide">
+          Searching for spatial target...
+        </span>
+</div>
+</div>
+<!-- Bottom Sheet & Quick Action Panel -->
+<div class="relative z-30 bg-slate-950/85 backdrop-blur-2xl border-t border-white/15 rounded-t-[32px] px-margin-mobile pt-3 pb-6 shadow-[0_-12px_40px_rgba(0,0,0,0.7)] flex flex-col gap-4">
+<!-- Drag Handle Indicator -->
+<div class="w-10 h-1 bg-white/25 rounded-full mx-auto"></div>
+<!-- Quick Actions Row -->
+<div class="flex items-center justify-between gap-3 pt-1">
+<!-- Torch Control -->
+<button class="flex flex-col items-center gap-1 group active:scale-95 transition-transform duration-150">
+<div class="w-12 h-12 rounded-full bg-white/10 group-hover:bg-white/15 border border-white/15 flex items-center justify-center text-white transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[22px]">flashlight_on</span>
+</div>
+<span class="font-label-sm text-label-sm text-white/70 group-hover:text-white">Torch</span>
+</button>
+<!-- Import from Gallery Pill Button (Primary Action) -->
+<button class="flex-1 h-12 rounded-full bg-primary-container/20 hover:bg-primary-container/30 border border-primary-container/40 text-white px-4 flex items-center justify-center gap-2 active:scale-[0.98] transition-all shadow-[0_4px_16px_rgba(124,159,229,0.2)]">
+<span class="material-symbols-outlined text-[20px] text-primary-fixed-dim">photo_library</span>
+<span class="font-label-lg text-label-lg font-semibold tracking-tight text-white">Import from Gallery</span>
+</button>
+<!-- Camera Flip Control -->
+<button class="flex flex-col items-center gap-1 group active:scale-95 transition-transform duration-150">
+<div class="w-12 h-12 rounded-full bg-white/10 group-hover:bg-white/15 border border-white/15 flex items-center justify-center text-white transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[22px]">flip_camera_ios</span>
+</div>
+<span class="font-label-sm text-label-sm text-white/70 group-hover:text-white">Flip</span>
+</button>
+</div>
+<!-- Recent Scanned Ads Section -->
+<div class="mt-1 flex flex-col gap-2">
+<div class="flex justify-between items-baseline px-0.5">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-[15px] font-bold text-white tracking-tight">Recent Scanned Ads</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+</div>
+<button class="font-label-sm text-label-sm text-primary-fixed-dim hover:text-white transition-colors">See all (14)</button>
+</div>
+<!-- Horizontal Scrollable Cards List -->
+<div class="flex gap-2.5 overflow-x-auto no-scrollbar pb-1 pt-0.5 -mx-margin-mobile px-margin-mobile">
+<!-- Card 1: Nova X Pro -->
+<div class="flex-shrink-0 w-[190px] p-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors backdrop-blur-md cursor-pointer flex flex-col gap-2 group">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary/30 text-primary-fixed-dim border border-primary/40">
+                Tech / 3D Model
+              </span>
+<span class="material-symbols-outlined text-[16px] text-white/40 group-hover:text-primary-container transition-colors">open_in_new</span>
+</div>
+<div class="flex items-center gap-2 mt-0.5">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-primary/30 to-primary-container/20 flex items-center justify-center border border-white/10 text-primary-fixed-dim flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">smartphone</span>
+</div>
+<div class="min-w-0">
+<h4 class="font-label-md text-label-md font-bold text-white truncate">Nova X Pro</h4>
+<p class="font-body-sm text-[11px] text-white/50">10m ago</p>
+</div>
+</div>
+</div>
+<!-- Card 2: AeroGlide Runner -->
+<div class="flex-shrink-0 w-[190px] p-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors backdrop-blur-md cursor-pointer flex flex-col gap-2 group">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-secondary/30 text-secondary-fixed border border-secondary/40">
+                Footwear / AR Wear
+              </span>
+<span class="material-symbols-outlined text-[16px] text-white/40 group-hover:text-secondary-fixed transition-colors">open_in_new</span>
+</div>
+<div class="flex items-center gap-2 mt-0.5">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-secondary/30 to-secondary-container/20 flex items-center justify-center border border-white/10 text-secondary-fixed flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">styler</span>
+</div>
+<div class="min-w-0">
+<h4 class="font-label-md text-label-md font-bold text-white truncate">AeroGlide Runner</h4>
+<p class="font-body-sm text-[11px] text-white/50">2h ago</p>
+</div>
+</div>
+</div>
+<!-- Card 3: Fizz Berry Soda -->
+<div class="flex-shrink-0 w-[190px] p-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors backdrop-blur-md cursor-pointer flex flex-col gap-2 group">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-tertiary-container/30 text-tertiary-fixed border border-tertiary-container/40">
+                Beverage / AR Promo
+              </span>
+<span class="material-symbols-outlined text-[16px] text-white/40 group-hover:text-tertiary-fixed transition-colors">open_in_new</span>
+</div>
+<div class="flex items-center gap-2 mt-0.5">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-tertiary/40 to-tertiary-container/20 flex items-center justify-center border border-white/10 text-tertiary-fixed flex-shrink-0">
+<span class="material-symbols-outlined text-[18px]">sports_bar</span>
+</div>
+<div class="min-w-0">
+<h4 class="font-label-md text-label-md font-bold text-white truncate">Fizz Berry Soda</h4>
+<p class="font-body-sm text-[11px] text-white/50">Yesterday</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Subtle Home Indicator Bar for iOS -->
+<div class="w-32 h-1 bg-white/20 rounded-full mx-auto mt-1"></div>
+</div>
+</div>
+<!-- Interactive JavaScript for Flashlight and Visual feedback -->
+<script>
+    const flashBtn = document.getElementById('flashToggle');
+    let isFlashActive = true;
+
+    flashBtn.addEventListener('click', () => {
+      isFlashActive = !isFlashActive;
+      const icon = flashBtn.querySelector('span');
+      if (isFlashActive) {
+        icon.textContent = 'flash_on';
+        icon.classList.add('text-amber-300');
+        icon.classList.remove('text-white/60');
+      } else {
+        icon.textContent = 'flash_off';
+        icon.classList.remove('text-amber-300');
+        icon.classList.add('text-white/60');
+      }
+    });
+  </script>
+</body></html>
