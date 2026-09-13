@@ -8,25 +8,37 @@ class FirebaseService {
   factory FirebaseService() => _instance;
   FirebaseService._internal();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  FirebaseAuth? get auth {
+    try {
+      return FirebaseAuth.instance;
+    } catch (_) {
+      return null;
+    }
+  }
 
-  FirebaseAuth get auth => _auth;
-  FirebaseFirestore get firestore => _firestore;
+  FirebaseFirestore? get firestore {
+    try {
+      return FirebaseFirestore.instance;
+    } catch (_) {
+      return null;
+    }
+  }
 
-  User? get currentFirebaseUser => _auth.currentUser;
-  Stream<User?> get authStateChanges => _auth.authStateChanges();
+  User? get currentFirebaseUser => auth?.currentUser;
+  Stream<User?> get authStateChanges => auth?.authStateChanges() ?? const Stream.empty();
 
   // Collections
-  CollectionReference get usersRef => _firestore.collection('users');
-  CollectionReference get campaignsRef => _firestore.collection('campaigns');
-  CollectionReference get productsRef => _firestore.collection('products');
-  CollectionReference get interactionsRef => _firestore.collection('interactions');
+  CollectionReference? get usersRef => firestore?.collection('users');
+  CollectionReference? get campaignsRef => firestore?.collection('campaigns');
+  CollectionReference? get productsRef => firestore?.collection('products');
+  CollectionReference? get interactionsRef => firestore?.collection('interactions');
 
   /// Sign In with Email and Password
   Future<UserModel?> signInWithEmail(String email, String password) async {
+    final a = auth;
+    if (a == null) return null;
     try {
-      final credential = await _auth.signInWithEmailAndPassword(
+      final credential = await a.signInWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
@@ -47,8 +59,10 @@ class FirebaseService {
     required String displayName,
     required String role,
   }) async {
+    final a = auth;
+    if (a == null) return null;
     try {
-      final credential = await _auth.createUserWithEmailAndPassword(
+      final credential = await a.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
@@ -61,7 +75,7 @@ class FirebaseService {
           createdAt: DateTime.now(),
         );
 
-        await usersRef.doc(userModel.uid).set(userModel.toMap());
+        await usersRef?.doc(userModel.uid).set(userModel.toMap());
         return userModel;
       }
     } catch (e) {
@@ -74,8 +88,8 @@ class FirebaseService {
   /// Fetch user profile from Firestore
   Future<UserModel?> getUserProfile(String uid) async {
     try {
-      final doc = await usersRef.doc(uid).get();
-      if (doc.exists && doc.data() != null) {
+      final doc = await usersRef?.doc(uid).get();
+      if (doc != null && doc.exists && doc.data() != null) {
         return UserModel.fromMap(doc.data() as Map<String, dynamic>, uid);
       }
     } catch (e) {
@@ -86,11 +100,11 @@ class FirebaseService {
 
   /// Update User Profile
   Future<void> updateUserProfile(UserModel user) async {
-    await usersRef.doc(user.uid).update(user.toMap());
+    await usersRef?.doc(user.uid).update(user.toMap());
   }
 
   /// Sign Out
   Future<void> signOut() async {
-    await _auth.signOut();
+    await auth?.signOut();
   }
 }

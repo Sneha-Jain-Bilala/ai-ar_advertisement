@@ -5,12 +5,14 @@ class QrUtils {
 
   /// Encodes campaign ID into standard AR-AdVision QR payload
   static String generateCampaignPayload(String campaignId, {String? productId}) {
-    final payload = {
+    final payload = <String, dynamic>{
       'app': 'arvision',
       'campaignId': campaignId,
-      if (productId != null) 'productId': productId,
       't': DateTime.now().millisecondsSinceEpoch,
     };
+    if (productId != null) {
+      payload['productId'] = productId;
+    }
     return '$qrPrefix${base64Url.encode(utf8.encode(jsonEncode(payload)))}';
   }
 

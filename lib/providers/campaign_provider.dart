@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import '../core/utils/qr_utils.dart';
 import '../data/models/campaign_model.dart';
 import '../data/repositories/campaign_repository.dart';
-import '../data/repositories/product_repository.dart';
 
 class CampaignProvider extends ChangeNotifier {
   final CampaignRepository _campaignRepository = CampaignRepository();
-  final ProductRepository _productRepository = ProductRepository();
 
   List<CampaignModel> _campaigns = [];
   bool _isLoading = false;
