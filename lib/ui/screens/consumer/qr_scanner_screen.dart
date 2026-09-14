@@ -197,10 +197,11 @@ class _QrScannerScreenState extends State<QrScannerScreen> with SingleTickerProv
                       const Icon(Icons.auto_awesome, size: 14, color: AppColors.primary),
                       const SizedBox(width: 6),
                       Text(
-                        'TEST WITH SAMPLE AR ADS:',
+                        'MATCHED 3D AR ADS (TAP TO PREVIEW):',
                         style: AppTypography.labelSmall.copyWith(
                           color: Colors.white70,
                           letterSpacing: 0.6,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],

@@ -3,14 +3,13 @@ class AppConstants {
   static const String appTagline = 'Bring Everyday Ads to Life in AR';
   static const String appVersion = '1.0.0';
 
-  // Demo Product Categories
+  // 3D Model Matched Categories
   static const List<String> categories = [
     'All',
-    'Electronics',
     'Fashion',
-    'Beverages',
     'Accessories',
-    'Lifestyle',
+    'Beverages',
+    'Electronics',
   ];
 
   // User Roles
