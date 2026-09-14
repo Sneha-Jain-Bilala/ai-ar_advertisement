@@ -208,12 +208,15 @@ Be warm, specific, and under 30 words. Reference their interests.
       throw Exception('Missing Groq API key in .env');
     }
 
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $key',
+      'User-Agent': 'AR-AdVision-App/1.0',
+    };
+
     final response = await http.post(
       Uri.parse(ApiConstants.groqBaseUrl),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $key',
-      },
+      headers: headers,
       body: jsonEncode({
         'model': ApiConstants.groqModel,
         'messages': [
@@ -236,14 +239,13 @@ Be warm, specific, and under 30 words. Reference their interests.
       }
     }
 
-    // Attempt fallback model if 70b hits rate limits
+    debugPrint('Groq primary model failed (${response.statusCode}): ${response.body}');
+
+    // Attempt fallback model
     if (response.statusCode != 200) {
       final fallbackResponse = await http.post(
         Uri.parse(ApiConstants.groqBaseUrl),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $key',
-        },
+        headers: headers,
         body: jsonEncode({
           'model': ApiConstants.groqFallbackModel,
           'messages': [
@@ -265,7 +267,8 @@ Be warm, specific, and under 30 words. Reference their interests.
           }
         }
       }
-      throw Exception('Groq API error (${response.statusCode}): ${response.body}');
+      debugPrint('Groq fallback model failed (${fallbackResponse.statusCode}): ${fallbackResponse.body}');
+      throw Exception('Groq API error (${fallbackResponse.statusCode}): ${fallbackResponse.body}');
     }
 
     throw Exception('Empty response from Groq');

@@ -24,12 +24,22 @@ class AdvertiserDashboardScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
+        titleSpacing: 0,
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(Icons.storefront_rounded, size: 20, color: AppColors.primary),
             const SizedBox(width: 8),
-            Text('Brand Hub • ${auth.currentUser?.displayName ?? "Aura Tech"}'),
+            Flexible(
+              child: Text(
+                auth.currentUser?.displayName != null
+                    ? 'Brand Hub • ${auth.currentUser!.displayName}'
+                    : 'Brand Hub',
+                style: AppTypography.headlineSmall,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
           ],
         ),
         leading: IconButton(
@@ -42,21 +52,29 @@ class AdvertiserDashboardScreen extends StatelessWidget {
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 12),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
               color: AppColors.secondaryLight,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(14),
               border: Border.all(color: AppColors.secondary),
             ),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  width: 8,
-                  height: 8,
+                  width: 6,
+                  height: 6,
                   decoration: const BoxDecoration(color: AppColors.secondary, shape: BoxShape.circle),
                 ),
-                const SizedBox(width: 6),
-                Text('Advertiser', style: AppTypography.labelSmall.copyWith(color: AppColors.secondaryDark)),
+                const SizedBox(width: 4),
+                Text(
+                  'Brand',
+                  style: AppTypography.labelSmall.copyWith(
+                    color: AppColors.secondaryDark,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 10,
+                  ),
+                ),
               ],
             ),
           ),
@@ -120,7 +138,7 @@ class AdvertiserDashboardScreen extends StatelessWidget {
                     bgColor: AppColors.primaryLight,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 10),
                 Expanded(
                   child: _buildKpiCard(
                     title: 'Avg. Dwell Time',
@@ -133,25 +151,25 @@ class AdvertiserDashboardScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             Row(
               children: [
                 Expanded(
                   child: _buildKpiCard(
-                    title: '3D Interaction Rate',
+                    title: 'Interaction Rate',
                     value: '${kpis['interactionRate'].toStringAsFixed(1)}%',
-                    trend: '+5.1% engagement',
+                    trend: '+5.1% engage',
                     icon: Icons.touch_app_outlined,
                     color: AppColors.accentDark,
                     bgColor: AppColors.accentLight,
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 10),
                 Expanded(
                   child: _buildKpiCard(
                     title: 'Conversion CTR',
                     value: '${kpis['conversionRate']}%',
-                    trend: 'Above benchmark',
+                    trend: 'Above target',
                     icon: Icons.ads_click_rounded,
                     color: const Color(0xFFC48B00),
                     bgColor: AppColors.warningLight,
@@ -169,41 +187,65 @@ class AdvertiserDashboardScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('7-Day Engagement Trend', style: AppTypography.headlineSmall),
-                          Text('Daily QR Scans vs 3D Rotations', style: AppTypography.bodySmall),
-                        ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '7-Day Engagement Trend',
+                              style: AppTypography.headlineSmall,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              'Daily QR Scans vs 3D Rotations',
+                              style: AppTypography.bodySmall,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
                       ),
-                      Row(
+                      const SizedBox(width: 8),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 4,
                         children: [
                           _buildLegendDot(AppColors.primary, 'Scans'),
-                          const SizedBox(width: 12),
                           _buildLegendDot(AppColors.secondary, '3D Moves'),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 16),
                   SizedBox(
                     height: 180,
                     child: LineChart(
                       LineChartData(
                         gridData: const FlGridData(show: false),
                         titlesData: FlTitlesData(
+                          leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                           rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                           topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
                           bottomTitles: AxisTitles(
                             sideTitles: SideTitles(
                               showTitles: true,
+                              reservedSize: 24,
+                              interval: 1,
                               getTitlesWidget: (val, meta) {
                                 final idx = val.toInt();
                                 if (idx >= 0 && idx < trend.length) {
                                   final days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                                  return Text(days[idx % 7], style: AppTypography.labelSmall.copyWith(fontSize: 10));
+                                  return Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: Text(
+                                      days[idx % 7],
+                                      style: AppTypography.labelSmall.copyWith(fontSize: 10),
+                                    ),
+                                  );
                                 }
                                 return const SizedBox.shrink();
                               },
@@ -300,25 +342,46 @@ class AdvertiserDashboardScreen extends StatelessWidget {
     required Color bgColor,
   }) {
     return CustomCard(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title, style: AppTypography.labelSmall.copyWith(color: AppColors.textTertiary)),
+              Expanded(
+                child: Text(
+                  title,
+                  style: AppTypography.labelSmall.copyWith(
+                    color: AppColors.textTertiary,
+                    fontSize: 11,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 4),
               Container(
-                padding: const EdgeInsets.all(6),
+                padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
-                child: Icon(icon, size: 16, color: color),
+                child: Icon(icon, size: 14, color: color),
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          Text(value, style: AppTypography.statNumber.copyWith(fontSize: 22)),
-          const SizedBox(height: 4),
-          Text(trend, style: AppTypography.labelSmall.copyWith(color: color, fontSize: 10)),
+          const SizedBox(height: 6),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(value, style: AppTypography.statNumber.copyWith(fontSize: 20)),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            trend,
+            style: AppTypography.labelSmall.copyWith(color: color, fontSize: 10),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       ),
     );
@@ -368,12 +431,15 @@ class AdvertiserDashboardScreen extends StatelessWidget {
             const Divider(color: AppColors.border),
             const SizedBox(height: 6),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildMiniStat('Scans', '${c.scanCount}'),
-                _buildMiniStat('Dwell', '${c.avgDwellTimeSeconds}s'),
-                _buildMiniStat('Engage', '${c.interactionRate.toStringAsFixed(0)}%'),
+                Expanded(child: _buildMiniStat('Scans', '${c.scanCount}')),
+                Expanded(child: _buildMiniStat('Dwell', '${c.avgDwellTimeSeconds}s')),
+                Expanded(child: _buildMiniStat('Engage', '${c.interactionRate.toStringAsFixed(0)}%')),
                 TextButton(
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    visualDensity: VisualDensity.compact,
+                  ),
                   onPressed: () {
                     context.push('/advertiser/campaign-detail/${c.id}');
                   },
