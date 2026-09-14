@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sceneview/flutter_sceneview.dart';
@@ -27,6 +28,7 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   final GroqService _groqService = GroqService();
   final TextEditingController _questionController = TextEditingController();
+  SceneViewController? _sceneController;
 
   String? _customAiAnswer;
   bool _isAiThinking = false;
@@ -37,9 +39,29 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     'What is the warranty coverage?',
   ];
 
+  String _resolveModelPath(String rawPath) {
+    var path = rawPath;
+    if (Platform.isIOS && path.endsWith('.glb')) {
+      path = path.replaceAll('.glb', '.usdz');
+    }
+    if (path.startsWith('http://') ||
+        path.startsWith('https://') ||
+        path.startsWith('flutter_assets/')) {
+      return path;
+    }
+    return 'flutter_assets/$path';
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _sceneController = SceneViewController();
+  }
+
   @override
   void dispose() {
     _questionController.dispose();
+    _sceneController?.dispose();
     super.dispose();
   }
 
@@ -152,14 +174,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(24),
                     child: SceneView(
+                      controller: _sceneController,
                       cameraControlMode: CameraControlMode.orbit,
                       autoCenterContent: true,
-                      initialModels: [
-                        ModelNode(
-                          modelPath: product.modelAssetPath,
-                          scale: 1.0,
-                        ),
-                      ],
+                      onViewCreated: () {
+                        final effectivePath = _resolveModelPath(product.modelAssetPath);
+                        _sceneController?.loadModel(
+                          ModelNode(
+                            modelPath: effectivePath,
+                            scale: 1.0,
+                          ),
+                        );
+                      },
                     ),
                   ),
 

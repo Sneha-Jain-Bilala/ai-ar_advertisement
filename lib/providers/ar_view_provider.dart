@@ -107,10 +107,18 @@ class ArViewProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void markRotated() {
+    _hasRotated = true;
+  }
+
   void scaleModel(double newScale) {
     _scale = newScale.clamp(0.4, 2.5);
     _hasScaled = true;
     notifyListeners();
+  }
+
+  void markScaled() {
+    _hasScaled = true;
   }
 
   void selectColor(String colorHex) {

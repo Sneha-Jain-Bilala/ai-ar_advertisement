@@ -1,6 +1,9 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_sceneview/flutter_sceneview.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,15 +30,21 @@ class _ArViewerScreenState extends State<ArViewerScreen> {
   bool _useStudioFallback = true;
   bool _isFlashOn = false;
   ArViewProvider? _arProvider;
+  Timer? _scaleDebounce;
+  double _lastLoadedScale = 1.0;
 
   String _resolveModelPath(String rawPath) {
-    if (rawPath.startsWith('http://') ||
-        rawPath.startsWith('https://') ||
-        rawPath.startsWith('flutter_assets/')) {
-      return rawPath;
+    var path = rawPath;
+    if (Platform.isIOS && path.endsWith('.glb')) {
+      path = path.replaceAll('.glb', '.usdz');
+    }
+    if (path.startsWith('http://') ||
+        path.startsWith('https://') ||
+        path.startsWith('flutter_assets/')) {
+      return path;
     }
     // Android AssetManager opens Flutter assets under flutter_assets/
-    return 'flutter_assets/$rawPath';
+    return 'flutter_assets/$path';
   }
 
   @override
@@ -69,12 +78,75 @@ class _ArViewerScreenState extends State<ArViewerScreen> {
 
   @override
   void dispose() {
+    _scaleDebounce?.cancel();
     _arProvider?.endSession();
     _sceneController?.dispose();
     super.dispose();
   }
 
-  void _toggleViewMode() {
+  Future<bool> _ensureCameraPermission() async {
+    final status = await Permission.camera.status;
+    if (status.isGranted) {
+      return true;
+    }
+
+    final result = await Permission.camera.request();
+    if (result.isGranted) {
+      return true;
+    }
+
+    if (!mounted) return false;
+
+    if (result.isPermanentlyDenied) {
+      _showSettingsDialog();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Camera permission is required for AR mode. Switched to 3D Studio.'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+    }
+    return false;
+  }
+
+  void _showSettingsDialog() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.surface,
+        title: const Text('Camera Permission Required', style: TextStyle(color: AppColors.textPrimary)),
+        content: const Text(
+          'AR mode needs access to your camera to project 3D models in your space. Please enable camera permission in Settings.',
+          style: TextStyle(color: AppColors.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Stay in 3D', style: TextStyle(color: AppColors.textSecondary)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              openAppSettings();
+            },
+            child: const Text('Open Settings', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _toggleViewMode() async {
+    if (_useStudioFallback) {
+      // Switching to AR mode: check permission first!
+      final granted = await _ensureCameraPermission();
+      if (!granted) {
+        return;
+      }
+    }
+
     setState(() {
       _useStudioFallback = !_useStudioFallback;
       _sceneController?.dispose();
@@ -88,6 +160,7 @@ class _ArViewerScreenState extends State<ArViewerScreen> {
     final product = arProvider.activeProduct;
     if (product != null && _sceneController != null) {
       final effectivePath = _resolveModelPath(product.modelAssetPath);
+      _lastLoadedScale = arProvider.scale;
       try {
         _sceneController!.loadModel(
           ModelNode(
@@ -102,6 +175,34 @@ class _ArViewerScreenState extends State<ArViewerScreen> {
         debugPrint('SceneView loadModel error: $e');
       }
     }
+  }
+
+  void _applyScaleToScene(double newScale) {
+    if ((newScale - _lastLoadedScale).abs() < 0.05) return;
+    _scaleDebounce?.cancel();
+    _scaleDebounce = Timer(const Duration(milliseconds: 250), () {
+      if (!mounted || _sceneController == null) return;
+      final arProvider = _arProvider ?? context.read<ArViewProvider>();
+      final product = arProvider.activeProduct;
+      if (product == null) return;
+
+      final effectivePath = _resolveModelPath(product.modelAssetPath);
+      _lastLoadedScale = newScale;
+      try {
+        _sceneController!.clearScene();
+        _sceneController!.loadModel(
+          ModelNode(
+            modelPath: effectivePath,
+            scale: newScale,
+            x: 0.0,
+            y: _useStudioFallback ? 0.0 : -0.15,
+            z: _useStudioFallback ? 0.0 : -0.85,
+          ),
+        );
+      } catch (e) {
+        debugPrint('SceneView reloadModel error: $e');
+      }
+    });
   }
 
   void _handleShare(CampaignModel campaign) {
@@ -146,21 +247,22 @@ class _ArViewerScreenState extends State<ArViewerScreen> {
       );
     }
 
+    // Apply scale changes via debounced reload pipeline
+    if ((arProvider.scale - _lastLoadedScale).abs() >= 0.05) {
+      _applyScaleToScene(arProvider.scale);
+    }
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: [
           // 1. AR SceneView (or fallback 3D Orbit Studio)
+          // Passive Listener does not compete in the gesture arena, allowing
+          // native touches to reach the SceneView platform view for orbit/zoom.
           Positioned.fill(
-            child: GestureDetector(
-              onScaleUpdate: (details) {
-                if (details.scale != 1.0) {
-                  arProvider.scaleModel(arProvider.scale * details.scale);
-                }
-                if (details.focalPointDelta.dx != 0) {
-                  arProvider.rotateModel(details.focalPointDelta.dx * 0.8);
-                }
-              },
+            child: Listener(
+              onPointerMove: (_) => arProvider.markRotated(),
+              onPointerDown: (_) => arProvider.markScaled(),
               child: _build3dOrArView(product.modelAssetPath),
             ),
           ),
@@ -179,11 +281,11 @@ class _ArViewerScreenState extends State<ArViewerScreen> {
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: AppColors.secondary.withValues(alpha: 0.5)),
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.blur_on_rounded, color: AppColors.secondary, size: 18),
-                      const SizedBox(width: 8),
+                      Icon(Icons.blur_on_rounded, color: AppColors.secondary, size: 18),
+                      SizedBox(width: 8),
                       Text(
                         'Surface Tracking Active',
                         style: TextStyle(
@@ -312,8 +414,6 @@ class _ArViewerScreenState extends State<ArViewerScreen> {
   }
 
   Widget _build3dOrArView(String modelPath) {
-    final effectivePath = _resolveModelPath(modelPath);
-
     if (_useStudioFallback || !_isArSupported) {
       return SceneView(
         key: const ValueKey('studio_3d_view'),
@@ -321,12 +421,6 @@ class _ArViewerScreenState extends State<ArViewerScreen> {
         cameraControlMode: CameraControlMode.orbit,
         autoCenterContent: true,
         onViewCreated: _onSceneCreated,
-        initialModels: [
-          ModelNode(
-            modelPath: effectivePath,
-            scale: 1.0,
-          ),
-        ],
       );
     }
 
