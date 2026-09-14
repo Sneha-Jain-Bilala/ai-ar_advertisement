@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Hello, ${user?.displayName ?? "Alex"} ✨',
+                            'Hello, ${user?.displayName ?? "Sneha"} ✨',
                             style: AppTypography.headlineLarge,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../providers/auth_provider.dart';
@@ -14,7 +15,8 @@ class AdminDashboardScreen extends StatefulWidget {
   State<AdminDashboardScreen> createState() => _AdminDashboardScreenState();
 }
 
-class _AdminDashboardScreenState extends State<AdminDashboardScreen> with SingleTickerProviderStateMixin {
+class _AdminDashboardScreenState extends State<AdminDashboardScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -75,21 +77,38 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(c.product?.brand ?? 'Brand', style: AppTypography.labelSmall.copyWith(color: AppColors.primary)),
+                        Text(
+                          c.product?.brand ?? 'Brand',
+                          style: AppTypography.labelSmall.copyWith(
+                            color: AppColors.primary,
+                          ),
+                        ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.secondaryLight,
                             borderRadius: BorderRadius.circular(6),
                           ),
-                          child: Text('VERIFIED', style: AppTypography.labelSmall.copyWith(color: AppColors.secondaryDark, fontSize: 10)),
+                          child: Text(
+                            'VERIFIED',
+                            style: AppTypography.labelSmall.copyWith(
+                              color: AppColors.secondaryDark,
+                              fontSize: 10,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 4),
                     Text(c.title, style: AppTypography.headlineSmall),
                     const SizedBox(height: 4),
-                    Text('Model: ${c.product?.modelAssetPath ?? "assets/models/shoe.glb"}', style: AppTypography.bodySmall),
+                    Text(
+                      'Model: ${c.product?.modelAssetPath ?? "assets/models/shoe.glb"}',
+                      style: AppTypography.bodySmall,
+                    ),
                     const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -97,10 +116,17 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
                         OutlinedButton(
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Flagged "${c.title}" for review')),
+                              SnackBar(
+                                content: Text(
+                                  'Flagged "${c.title}" for review',
+                                ),
+                              ),
                             );
                           },
-                          child: const Text('Flag', style: TextStyle(color: AppColors.error)),
+                          child: const Text(
+                            'Flag',
+                            style: TextStyle(color: AppColors.error),
+                          ),
                         ),
                         const SizedBox(width: 8),
                         ElevatedButton(
@@ -121,13 +147,33 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
           ListView(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
             children: [
-              _buildUserTile('Alex Rivers', 'alex.explorer@arvision.app', 'Consumer', true),
+              _buildUserTile(
+                'Sneha Bilala',
+                'snehabilala@gmail.com',
+                'Consumer',
+                true,
+              ),
               const SizedBox(height: 10),
-              _buildUserTile('Aura Tech Official', 'brands@auratech.com', 'Advertiser', true),
+              _buildUserTile(
+                'Aura Tech Official',
+                'brands@auratech.com',
+                'Advertiser',
+                true,
+              ),
               const SizedBox(height: 10),
-              _buildUserTile('Strato Athletics', 'campaigns@strato.io', 'Advertiser', true),
+              _buildUserTile(
+                'Strato Athletics',
+                'campaigns@strato.io',
+                'Advertiser',
+                true,
+              ),
               const SizedBox(height: 10),
-              _buildUserTile('System Superadmin', 'admin@arvision.internal', 'Admin', true),
+              _buildUserTile(
+                'System Superadmin',
+                'admin@arvision.internal',
+                'Admin',
+                true,
+              ),
             ],
           ),
         ],
@@ -142,7 +188,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
         children: [
           CircleAvatar(
             backgroundColor: AppColors.primaryLight,
-            child: Text(name[0], style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
+            child: Text(
+              name[0],
+              style: const TextStyle(
+                color: AppColors.primary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -157,10 +209,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: role == 'Admin' ? AppColors.accentLight : AppColors.surfaceSecondary,
+              color: role == 'Admin'
+                  ? AppColors.accentLight
+                  : AppColors.surfaceSecondary,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Text(role, style: AppTypography.labelSmall.copyWith(fontSize: 10)),
+            child: Text(
+              role,
+              style: AppTypography.labelSmall.copyWith(fontSize: 10),
+            ),
           ),
         ],
       ),

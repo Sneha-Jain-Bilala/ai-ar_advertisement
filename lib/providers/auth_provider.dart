@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../data/models/user_model.dart';
 import '../services/firebase_service.dart';
 
@@ -26,9 +27,9 @@ class AuthProvider extends ChangeNotifier {
   void _initDemoUser() {
     // Default guest consumer user for immediate, smooth preview
     _currentUser = UserModel(
-      uid: 'user_alex_consumer',
-      email: 'alex.explorer@arvision.app',
-      displayName: 'Alex Rivers',
+      uid: 'user_sneha_consumer',
+      email: 'snehabilala@gmail.com',
+      displayName: 'Sneha Bilala',
       role: 'consumer',
       savedAdIds: ['camp_aeroglide_summer', 'camp_fizz_taste'],
       createdAt: DateTime.now().subtract(const Duration(days: 30)),
@@ -59,7 +60,9 @@ class AuthProvider extends ChangeNotifier {
           uid: 'user_${email.split('@').first}',
           email: email,
           displayName: email.split('@').first,
-          role: email.contains('brand') || email.contains('adv') ? 'advertiser' : 'consumer',
+          role: email.contains('brand') || email.contains('adv')
+              ? 'advertiser'
+              : 'consumer',
           createdAt: DateTime.now(),
         );
       }
@@ -72,7 +75,9 @@ class AuthProvider extends ChangeNotifier {
         uid: 'user_${email.split('@').first}',
         email: email,
         displayName: email.split('@').first,
-        role: email.contains('brand') || email.contains('adv') ? 'advertiser' : 'consumer',
+        role: email.contains('brand') || email.contains('adv')
+            ? 'advertiser'
+            : 'consumer',
         createdAt: DateTime.now(),
       );
       _isLoading = false;
@@ -99,7 +104,8 @@ class AuthProvider extends ChangeNotifier {
         displayName: displayName,
         role: role,
       );
-      _currentUser = user ??
+      _currentUser =
+          user ??
           UserModel(
             uid: 'user_${DateTime.now().millisecondsSinceEpoch}',
             email: email,

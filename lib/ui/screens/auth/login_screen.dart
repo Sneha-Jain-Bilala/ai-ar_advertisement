@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../providers/auth_provider.dart';
@@ -14,9 +15,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController(text: 'alex.explorer@arvision.app');
+  final _emailController = TextEditingController(text: 'snehabilala@gmail.com');
   final _passwordController = TextEditingController(text: 'password123');
-  final _nameController = TextEditingController(text: 'Alex Rivers');
+  final _nameController = TextEditingController(text: 'Sneha Bilala');
 
   bool _isSignUp = false;
   String _selectedRole = 'consumer'; // 'consumer' or 'advertiser'
@@ -47,7 +48,9 @@ class _LoginScreenState extends State<LoginScreen> {
       success = await auth.register(
         email: email,
         password: password,
-        displayName: _nameController.text.trim().isEmpty ? 'User' : _nameController.text.trim(),
+        displayName: _nameController.text.trim().isEmpty
+            ? 'User'
+            : _nameController.text.trim(),
         role: _selectedRole,
       );
     } else {
@@ -84,7 +87,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: BoxDecoration(
                   color: AppColors.primaryLight,
                   borderRadius: BorderRadius.circular(22),
-                  border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.3),
+                  ),
                 ),
                 child: const Center(
                   child: Icon(
@@ -95,10 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              Text(
-                'AR-AdVision',
-                style: AppTypography.displayMedium,
-              ),
+              Text('AR-AdVision', style: AppTypography.displayMedium),
               const SizedBox(height: 6),
               Text(
                 'Bring Everyday Ads to Life in AR',
@@ -122,14 +124,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           decoration: BoxDecoration(
-                            color: _selectedRole == 'consumer' ? AppColors.surface : Colors.transparent,
+                            color: _selectedRole == 'consumer'
+                                ? AppColors.surface
+                                : Colors.transparent,
                             borderRadius: BorderRadius.circular(12),
                             boxShadow: _selectedRole == 'consumer'
                                 ? [
                                     BoxShadow(
-                                      color: Colors.black.withValues(alpha: 0.04),
+                                      color: Colors.black.withValues(
+                                        alpha: 0.04,
+                                      ),
                                       blurRadius: 6,
-                                    )
+                                    ),
                                   ]
                                 : null,
                           ),
@@ -151,18 +157,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Expanded(
                       child: GestureDetector(
-                        onTap: () => setState(() => _selectedRole = 'advertiser'),
+                        onTap: () =>
+                            setState(() => _selectedRole = 'advertiser'),
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           decoration: BoxDecoration(
-                            color: _selectedRole == 'advertiser' ? AppColors.surface : Colors.transparent,
+                            color: _selectedRole == 'advertiser'
+                                ? AppColors.surface
+                                : Colors.transparent,
                             borderRadius: BorderRadius.circular(12),
                             boxShadow: _selectedRole == 'advertiser'
                                 ? [
                                     BoxShadow(
-                                      color: Colors.black.withValues(alpha: 0.04),
+                                      color: Colors.black.withValues(
+                                        alpha: 0.04,
+                                      ),
                                       blurRadius: 6,
-                                    )
+                                    ),
                                   ]
                                 : null,
                           ),
@@ -200,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: AppColors.primary.withValues(alpha: 0.05),
                       blurRadius: 20,
                       offset: const Offset(0, 4),
-                    )
+                    ),
                   ],
                 ),
                 child: Column(
@@ -217,7 +228,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: _nameController,
                         decoration: const InputDecoration(
                           labelText: 'Full Name',
-                          prefixIcon: Icon(Icons.person_outline_rounded, size: 20),
+                          prefixIcon: Icon(
+                            Icons.person_outline_rounded,
+                            size: 20,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 14),
@@ -238,13 +252,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        prefixIcon: const Icon(Icons.lock_outline_rounded, size: 20),
+                        prefixIcon: const Icon(
+                          Icons.lock_outline_rounded,
+                          size: 20,
+                        ),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                            _obscurePassword
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
                             size: 20,
                           ),
-                          onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                          onPressed: () => setState(
+                            () => _obscurePassword = !_obscurePassword,
+                          ),
                         ),
                       ),
                     ),
@@ -274,7 +295,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 icon: const Icon(Icons.bolt_rounded, color: AppColors.primary),
                 label: Text(
                   'Continue as Guest (${_selectedRole == 'advertiser' ? 'Advertiser' : 'Consumer'})',
-                  style: AppTypography.labelLarge.copyWith(color: AppColors.primary),
+                  style: AppTypography.labelLarge.copyWith(
+                    color: AppColors.primary,
+                  ),
                 ),
               ),
 
@@ -285,7 +308,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    _isSignUp ? 'Already have an account? ' : "Don't have an account? ",
+                    _isSignUp
+                        ? 'Already have an account? '
+                        : "Don't have an account? ",
                     style: AppTypography.bodyMedium,
                   ),
                   GestureDetector(
